@@ -1,0 +1,218 @@
+{
+  "bookings": [
+    {
+      "serial": "X0MWUPXSZZ",
+      "ticketType": "return",
+      "cls": "SECOND",
+      "trainType": "ORDINARY",
+      "adults": 1,
+      "children": 0,
+      "total": 20,
+      "bookedAt": "2026-08-23T18:31:20.271Z",
+      "validTill": "2026-08-25",
+      "quote": {
+        "from": {
+          "code": "BEPR",
+          "name": "Belapur CBD"
+        },
+        "to": {
+          "code": "TNA",
+          "name": "Thane"
+        },
+        "chargeableKm": 28.6,
+        "fareSlabKm": "26-30",
+        "via": "SWDV-JNJ-TUBH",
+        "stops": 8,
+        "path": [
+          "BEPR",
+          "SWDV",
+          "NEU",
+          "JNJ",
+          "TUBH",
+          "KOKN",
+          "GNSL",
+          "RABL",
+          "AWL",
+          "TNA"
+        ],
+        "interchanges": [
+          {
+            "at": "JNJ",
+            "name": "Juinagar",
+            "fromLine": "harbour_panvel",
+            "toLine": "trans_harbour_nerul"
+          }
+        ],
+        "approxMinutes": 8,
+        "ticketType": "return",
+        "class": "SECOND",
+        "fareInr": 20,
+        "fareBasis": "2 x single, slab 26-30 km",
+        "fareAvailable": true,
+        "cidcoSurcharge": true
+      }
+    },
+    {
+      "serial": "X03M518LVF",
+      "ticketType": "single",
+      "cls": "SECOND",
+      "trainType": "ORDINARY",
+      "adults": 1,
+      "children": 0,
+      "total": 5,
+      "bookedAt": "2026-08-24T16:37:00.000Z",
+      "validTill": "2026-08-24",
+      "quote": {
+        "from": {
+          "code": "AWL",
+          "name": "Airoli"
+        },
+        "to": {
+          "code": "TNA",
+          "name": "Thane"
+        },
+        "chargeableKm": 6,
+        "fareSlabKm": "6-10",
+        "via": "",
+        "stops": 0,
+        "path": [
+          "AWL",
+          "TNA"
+        ],
+        "interchanges": [],
+        "approxMinutes": null,
+        "ticketType": "single",
+        "class": "SECOND",
+        "fareInr": 5,
+        "fareBasis": "1 x single, slab 6-10 km",
+        "fareAvailable": true,
+        "cidcoSurcharge": false
+      }
+    },
+    {
+      "serial": "X0FSQSX2FS",
+      "ticketType": "return",
+      "cls": "SECOND",
+      "trainType": "ORDINARY",
+      "adults": 2,
+      "children": 0,
+      "total": 20,
+      "bookedAt": "2026-08-23T10:36:00.000Z",
+      "validTill": "2026-08-24",
+      "quote": {
+        "from": {
+          "code": "AWL",
+          "name": "Airoli"
+        },
+        "to": {
+          "code": "TNA",
+          "name": "Thane"
+        },
+        "chargeableKm": 6,
+        "fareSlabKm": "6-10",
+        "via": "",
+        "stops": 0,
+        "path": [
+          "AWL",
+          "TNA"
+        ],
+        "interchanges": [],
+        "approxMinutes": null,
+        "ticketType": "return",
+        "class": "SECOND",
+        "fareInr": 10,
+        "fareBasis": "2 x single, slab 6-10 km",
+        "fareAvailable": true,
+        "cidcoSurcharge": false
+      }
+    },
+    {
+      "serial": "X0BL6YPSXV",
+      "ticketType": "return",
+      "cls": "SECOND",
+      "trainType": "ORDINARY",
+      "adults": 1,
+      "children": 0,
+      "total": 10,
+      "bookedAt": "2026-08-23T14:10:26.218Z",
+      "validTill": "2026-08-24",
+      "quote": {
+        "from": {
+          "code": "AWL",
+          "name": "Airoli"
+        },
+        "to": {
+          "code": "TNA",
+          "name": "Thane"
+        },
+        "chargeableKm": 6,
+        "fareSlabKm": "6-10",
+        "via": "",
+        "stops": 0,
+        "path": [
+          "AWL",
+          "TNA"
+        ],
+        "interchanges": [],
+        "approxMinutes": null,
+        "ticketType": "return",
+        "class": "SECOND",
+        "fareInr": 10,
+        "fareBasis": "2 x single, slab 6-10 km",
+        "fareAvailable": true,
+        "cidcoSurcharge": false
+      },
+      "passenger": {
+        "name": "Nilesh Vishwakarma Test",
+        "mobile": "8928268590",
+        "age": 27,
+        "idType": "Aadhaar Card",
+        "idNumber": "123456789876"
+      }
+    },
+    {
+      "serial": "X0C9DXV5S3",
+      "ticketType": "return",
+      "cls": "SECOND",
+      "trainType": "ORDINARY",
+      "adults": 2,
+      "children": 0,
+      "total": 20,
+      "bookedAt": "2026-08-23T14:09:16.185Z",
+      "validTill": "2026-08-24",
+      "quote": {
+        "from": {
+          "code": "AWL",
+          "name": "Airoli"
+        },
+        "to": {
+          "code": "TNA",
+          "name": "Thane"
+        },
+        "chargeableKm": 6,
+        "fareSlabKm": "6-10",
+        "via": "",
+        "stops": 0,
+        "path": [
+          "AWL",
+          "TNA"
+        ],
+        "interchanges": [],
+        "approxMinutes": null,
+        "ticketType": "return",
+        "class": "SECOND",
+        "fareInr": 10,
+        "fareBasis": "2 x single, slab 6-10 km",
+        "fareAvailable": true,
+        "cidcoSurcharge": false
+      },
+      "passenger": {
+        "name": "Nilesh Vishwakarma",
+        "mobile": "8928268590",
+        "age": 27,
+        "idType": "Aadhaar Card",
+        "idNumber": "123456789876"
+      }
+    }
+  ]
+}

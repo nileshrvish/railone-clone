@@ -1,0 +1,6115 @@
+{
+  "meta": {
+    "title": "Mumbai Suburban Rail Network — stations, codes, distances, graph and fare rules",
+    "version": "3.2",
+    "generated": "2026-08-23",
+    "units": "kilometres / INR",
+    "changes_from_v1": [
+      "Central line chainage re-anchored so Badlapur–CSMT = 68 km, matching a real RailOne season ticket.",
+      "Thane now 33.7 and Kalyan 53.9 (the map prints 33 and 53 — it rounds down).",
+      "Added is_routing_point, cidco_surcharge, edges[], fare_rules and ticket validity rules."
+    ],
+    "caveats": [
+      "The map is 'not to scale' and its per-hop numbers are whole-km rounded; they do not sum to the terminus totals.",
+      "Fare figures are deliberately NULL. Populate them from the WR/CR suburban fare tables before shipping.",
+      "Station codes for smaller Harbour/Trans-Harbour/Uran stations are unverified.",
+      "Metro and Monorail use separate tariffs and have no IR station codes.",
+      "minutes_from_origin are indicative slow-local running times off the map, not a timetable. Fast locals are materially quicker.",
+      "map_km_from_origin sometimes disagrees with km_from_origin. Badlapur is the known case: map says 67, a real season ticket says 68. Charge on km_from_origin; display map_km only if you want parity with m-Indicator.",
+      "The map marks Gavan-Uran under construction. That section may since have opened - verify before hiding those stations."
+    ],
+    "line_count": 12,
+    "station_row_count": 240,
+    "edge_count": 149,
+    "map_source": "m-Indicator 'Mumbai Suburban Rail Network' schematic",
+    "changes_from_v2": [
+      "Added minutes_from_origin (and minutes_from_thane for Navi Mumbai) from the map's time boxes.",
+      "Added map_km_from_origin so you can display the map's own figure next to our chainage.",
+      "Added aliases[] for every station — map spelling, platform-board spelling and common short forms.",
+      "Added status_on_map for the Nerul-Uran branch, which the map marks under construction past Kharkopar.",
+      "Added verified 6-10 km single second-class fare (Rs.5), return validity rule, passenger-count formula and ticket display rules — all from a real Airoli-Thane return ticket."
+    ],
+    "changes_from_v3": [
+      "Populated single_second and single_first across ~1–124 km from mumbailifeline.com's fare calculator (a real, queryable API, not a hand-typed guess) — cross-checked against the one photographed real ticket we already had, which it matches exactly (6–10km → Rs.5).",
+      "Captured AC Local fares from the same source in single_ac_unverified_for_future_use, but did NOT wire AC into the engine or UI as a priced class — that would need mumbai-rail.js's quote() and the search form's Class select to change too, left for a deliberate follow-up.",
+      "Season-pass (MST/QST/HST/YST) figures are untouched — that site only calculates single-journey fares, so they remain mostly null beyond the one verified real season ticket.",
+      "Bands past ~124 km (no line on this network reaches that far in one hop) are left null rather than extrapolated from shorter bands."
+    ]
+  },
+  "lines": [
+    {
+      "id": "western",
+      "name": "Western Line",
+      "operator": "Western Railway (WR)",
+      "map_colour": "#12224d",
+      "origin": "Churchgate",
+      "terminus": "Dahanu Road",
+      "distance_confidence": "good",
+      "stations": [
+        {
+          "seq": 1,
+          "name": "Churchgate",
+          "code": "CCG",
+          "km_from_origin": 0,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 1,
+          "is_junction": false,
+          "minutes_from_origin": 0,
+          "minutes_from_thane": null,
+          "map_km_from_origin": 0,
+          "aliases": [
+            "Churchgate"
+          ]
+        },
+        {
+          "seq": 2,
+          "name": "Marine Lines",
+          "code": "MEL",
+          "km_from_origin": 1.4,
+          "km_from_previous": 1.4,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Marine Lines"
+          ]
+        },
+        {
+          "seq": 3,
+          "name": "Charni Road",
+          "code": "CYR",
+          "km_from_origin": 2.5,
+          "km_from_previous": 1.1,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Charni Road"
+          ]
+        },
+        {
+          "seq": 4,
+          "name": "Grant Road",
+          "code": "GTR",
+          "km_from_origin": 3.5,
+          "km_from_previous": 1,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Grant Road"
+          ]
+        },
+        {
+          "seq": 5,
+          "name": "Mumbai Central",
+          "code": "BCT",
+          "km_from_origin": 4.8,
+          "km_from_previous": 1.3,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 10,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Mumbai Central"
+          ]
+        },
+        {
+          "seq": 6,
+          "name": "Mahalaxmi",
+          "code": "MX",
+          "km_from_origin": 6,
+          "km_from_previous": 1.2,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Mahalaxmi"
+          ]
+        },
+        {
+          "seq": 7,
+          "name": "Lower Parel",
+          "code": "PL",
+          "km_from_origin": 7.2,
+          "km_from_previous": 1.2,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Lower Parel"
+          ]
+        },
+        {
+          "seq": 8,
+          "name": "Prabhadevi",
+          "code": "PBHY",
+          "km_from_origin": 8.5,
+          "km_from_previous": 1.3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Prabhadevi",
+            "Elphinstone Road"
+          ]
+        },
+        {
+          "seq": 9,
+          "name": "Dadar",
+          "code": "DDR",
+          "km_from_origin": 9.3,
+          "km_from_previous": 0.8,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 21,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Dadar"
+          ]
+        },
+        {
+          "seq": 10,
+          "name": "Matunga Road",
+          "code": "MRU",
+          "km_from_origin": 10.9,
+          "km_from_previous": 1.6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Matunga Road"
+          ]
+        },
+        {
+          "seq": 11,
+          "name": "Mahim Junction",
+          "code": "MM",
+          "km_from_origin": 12.2,
+          "km_from_previous": 1.3,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Mahim Junction"
+          ]
+        },
+        {
+          "seq": 12,
+          "name": "Bandra",
+          "code": "BA",
+          "km_from_origin": 14.2,
+          "km_from_previous": 2,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 30,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Bandra"
+          ]
+        },
+        {
+          "seq": 13,
+          "name": "Khar Road",
+          "code": "KHAR",
+          "km_from_origin": 16,
+          "km_from_previous": 1.8,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Khar Road"
+          ]
+        },
+        {
+          "seq": 14,
+          "name": "Santacruz",
+          "code": "STC",
+          "km_from_origin": 17.4,
+          "km_from_previous": 1.4,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Santacruz"
+          ]
+        },
+        {
+          "seq": 15,
+          "name": "Vile Parle",
+          "code": "VLP",
+          "km_from_origin": 19.1,
+          "km_from_previous": 1.7,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vile Parle"
+          ]
+        },
+        {
+          "seq": 16,
+          "name": "Andheri",
+          "code": "ADH",
+          "km_from_origin": 21.4,
+          "km_from_previous": 2.3,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 41,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Andheri"
+          ]
+        },
+        {
+          "seq": 17,
+          "name": "Jogeshwari",
+          "code": "JOS",
+          "km_from_origin": 23.4,
+          "km_from_previous": 2,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Jogeshwari"
+          ]
+        },
+        {
+          "seq": 18,
+          "name": "Ram Mandir",
+          "code": "RMAR",
+          "km_from_origin": 25,
+          "km_from_previous": 1.6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Ram Mandir"
+          ]
+        },
+        {
+          "seq": 19,
+          "name": "Goregaon",
+          "code": "GMN",
+          "km_from_origin": 26.5,
+          "km_from_previous": 1.5,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Goregaon"
+          ]
+        },
+        {
+          "seq": 20,
+          "name": "Malad",
+          "code": "MDD",
+          "km_from_origin": 29.1,
+          "km_from_previous": 2.6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Malad"
+          ]
+        },
+        {
+          "seq": 21,
+          "name": "Kandivali",
+          "code": "KILE",
+          "km_from_origin": 31.6,
+          "km_from_previous": 2.5,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kandivali",
+            "Kandivli"
+          ]
+        },
+        {
+          "seq": 22,
+          "name": "Borivali",
+          "code": "BVI",
+          "km_from_origin": 34,
+          "km_from_previous": 2.4,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 59,
+          "minutes_from_thane": null,
+          "map_km_from_origin": 34,
+          "aliases": [
+            "Borivali"
+          ]
+        },
+        {
+          "seq": 23,
+          "name": "Dahisar",
+          "code": "DIC",
+          "km_from_origin": 36.4,
+          "km_from_previous": 2.4,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Dahisar"
+          ]
+        },
+        {
+          "seq": 24,
+          "name": "Mira Road",
+          "code": "MIRD",
+          "km_from_origin": 41.2,
+          "km_from_previous": 4.8,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Mira Road"
+          ]
+        },
+        {
+          "seq": 25,
+          "name": "Bhayandar",
+          "code": "BYR",
+          "km_from_origin": 44.4,
+          "km_from_previous": 3.2,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Bhayandar"
+          ]
+        },
+        {
+          "seq": 26,
+          "name": "Naigaon",
+          "code": "NIG",
+          "km_from_origin": 48.7,
+          "km_from_previous": 4.3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Naigaon"
+          ]
+        },
+        {
+          "seq": 27,
+          "name": "Vasai Road",
+          "code": "BSR",
+          "km_from_origin": 52,
+          "km_from_previous": 3.3,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": 85,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vasai Road"
+          ]
+        },
+        {
+          "seq": 28,
+          "name": "Nallasopara",
+          "code": "NSP",
+          "km_from_origin": 56.2,
+          "km_from_previous": 4.2,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Nallasopara"
+          ]
+        },
+        {
+          "seq": 29,
+          "name": "Virar",
+          "code": "VR",
+          "km_from_origin": 60,
+          "km_from_previous": 3.8,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 96,
+          "minutes_from_thane": null,
+          "map_km_from_origin": 60,
+          "aliases": [
+            "Virar"
+          ]
+        },
+        {
+          "seq": 30,
+          "name": "Vaitarna",
+          "code": "VTN",
+          "km_from_origin": 64.9,
+          "km_from_previous": 4.9,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vaitarna"
+          ]
+        },
+        {
+          "seq": 31,
+          "name": "Saphale",
+          "code": "SAH",
+          "km_from_origin": 72.5,
+          "km_from_previous": 7.6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Saphale"
+          ]
+        },
+        {
+          "seq": 32,
+          "name": "Kelve Road",
+          "code": "KELV",
+          "km_from_origin": 80.1,
+          "km_from_previous": 7.6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kelve Road"
+          ]
+        },
+        {
+          "seq": 33,
+          "name": "Palghar",
+          "code": "PLG",
+          "km_from_origin": 87.2,
+          "km_from_previous": 7.1,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Palghar"
+          ]
+        },
+        {
+          "seq": 34,
+          "name": "Umroli",
+          "code": "UMR",
+          "km_from_origin": 93.2,
+          "km_from_previous": 6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Umroli"
+          ]
+        },
+        {
+          "seq": 35,
+          "name": "Boisar",
+          "code": "BOR",
+          "km_from_origin": 99.4,
+          "km_from_previous": 6.2,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Boisar"
+          ]
+        },
+        {
+          "seq": 36,
+          "name": "Vangaon",
+          "code": "VGN",
+          "km_from_origin": 108.4,
+          "km_from_previous": 9,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vangaon"
+          ]
+        },
+        {
+          "seq": 37,
+          "name": "Dahanu Road",
+          "code": "DRD",
+          "km_from_origin": 123.8,
+          "km_from_previous": 15.4,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 1,
+          "is_junction": false,
+          "minutes_from_origin": 170,
+          "minutes_from_thane": null,
+          "map_km_from_origin": 124,
+          "aliases": [
+            "Dahanu Road"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "central_main_kasara",
+      "name": "Central Line — CSMT to Kasara",
+      "operator": "Central Railway (CR)",
+      "map_colour": "#9e1b23",
+      "origin": "Chhatrapati Shivaji Maharaj Terminus",
+      "terminus": "Kasara",
+      "distance_confidence": "good",
+      "stations": [
+        {
+          "seq": 1,
+          "name": "Chhatrapati Shivaji Maharaj Terminus",
+          "code": "CSMT",
+          "km_from_origin": 0,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 1,
+          "is_junction": false,
+          "minutes_from_origin": 0,
+          "minutes_from_thane": null,
+          "map_km_from_origin": 0,
+          "aliases": [
+            "CSMT",
+            "CST",
+            "Chhatrapati Shivaji Maharaj Terminus",
+            "Mumbai CST",
+            "VT"
+          ]
+        },
+        {
+          "seq": 2,
+          "name": "Masjid",
+          "code": "MSD",
+          "km_from_origin": 1.4,
+          "km_from_previous": 1.4,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Masjid Bunder",
+            "Masjid"
+          ]
+        },
+        {
+          "seq": 3,
+          "name": "Sandhurst Road",
+          "code": "SNRD",
+          "km_from_origin": 2.3,
+          "km_from_previous": 0.9,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Sandhurst Road"
+          ]
+        },
+        {
+          "seq": 4,
+          "name": "Byculla",
+          "code": "BY",
+          "km_from_origin": 4,
+          "km_from_previous": 1.7,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Byculla"
+          ]
+        },
+        {
+          "seq": 5,
+          "name": "Chinchpokli",
+          "code": "CHG",
+          "km_from_origin": 5.2,
+          "km_from_previous": 1.2,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Chinchpokli"
+          ]
+        },
+        {
+          "seq": 6,
+          "name": "Currey Road",
+          "code": "CY",
+          "km_from_origin": 6.1,
+          "km_from_previous": 0.9,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Currey Road"
+          ]
+        },
+        {
+          "seq": 7,
+          "name": "Parel",
+          "code": "PR",
+          "km_from_origin": 7.1,
+          "km_from_previous": 1,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Parel"
+          ]
+        },
+        {
+          "seq": 8,
+          "name": "Dadar",
+          "code": "DR",
+          "km_from_origin": 9,
+          "km_from_previous": 1.9,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 18,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Dadar"
+          ]
+        },
+        {
+          "seq": 9,
+          "name": "Matunga",
+          "code": "MTN",
+          "km_from_origin": 10.9,
+          "km_from_previous": 1.9,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Matunga"
+          ]
+        },
+        {
+          "seq": 10,
+          "name": "Sion",
+          "code": "SIN",
+          "km_from_origin": 12.7,
+          "km_from_previous": 1.8,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Sion"
+          ]
+        },
+        {
+          "seq": 11,
+          "name": "Kurla",
+          "code": "CLA",
+          "km_from_origin": 15.8,
+          "km_from_previous": 3.1,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 4,
+          "is_junction": true,
+          "minutes_from_origin": 29,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kurla"
+          ]
+        },
+        {
+          "seq": 12,
+          "name": "Vidyavihar",
+          "code": "VVH",
+          "km_from_origin": 17.4,
+          "km_from_previous": 1.6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vidya Vihar",
+            "Vidyavihar"
+          ]
+        },
+        {
+          "seq": 13,
+          "name": "Ghatkopar",
+          "code": "GC",
+          "km_from_origin": 18.9,
+          "km_from_previous": 1.5,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Ghatkopar"
+          ]
+        },
+        {
+          "seq": 14,
+          "name": "Vikhroli",
+          "code": "VK",
+          "km_from_origin": 21.3,
+          "km_from_previous": 2.4,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vikhroli"
+          ]
+        },
+        {
+          "seq": 15,
+          "name": "Kanjurmarg",
+          "code": "KJRD",
+          "km_from_origin": 23.2,
+          "km_from_previous": 1.9,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kanjur Marg",
+            "Kanjurmarg"
+          ]
+        },
+        {
+          "seq": 16,
+          "name": "Bhandup",
+          "code": "BND",
+          "km_from_origin": 25,
+          "km_from_previous": 1.8,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Bhandup"
+          ]
+        },
+        {
+          "seq": 17,
+          "name": "Nahur",
+          "code": "NHU",
+          "km_from_origin": 26.6,
+          "km_from_previous": 1.6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Nahur"
+          ]
+        },
+        {
+          "seq": 18,
+          "name": "Mulund",
+          "code": "MLND",
+          "km_from_origin": 28.3,
+          "km_from_previous": 1.7,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Mulund"
+          ]
+        },
+        {
+          "seq": 19,
+          "name": "Thane",
+          "code": "TNA",
+          "km_from_origin": 33.7,
+          "km_from_previous": 5.4,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": 56,
+          "minutes_from_thane": null,
+          "map_km_from_origin": 33,
+          "aliases": [
+            "Thane"
+          ]
+        },
+        {
+          "seq": 20,
+          "name": "Kalwa",
+          "code": "KVA",
+          "km_from_origin": 36.5,
+          "km_from_previous": 2.8,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kalwa"
+          ]
+        },
+        {
+          "seq": 21,
+          "name": "Mumbra",
+          "code": "MBQ",
+          "km_from_origin": 40.8,
+          "km_from_previous": 4.3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Mumbra"
+          ]
+        },
+        {
+          "seq": 22,
+          "name": "Diva Junction",
+          "code": "DIVA",
+          "km_from_origin": 44.6,
+          "km_from_previous": 3.8,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": 70,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Diva Junction"
+          ]
+        },
+        {
+          "seq": 23,
+          "name": "Kopar",
+          "code": "KOPR",
+          "km_from_origin": 47,
+          "km_from_previous": 2.4,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kopar"
+          ]
+        },
+        {
+          "seq": 24,
+          "name": "Dombivli",
+          "code": "DI",
+          "km_from_origin": 49.3,
+          "km_from_previous": 2.3,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 79,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Dombivali",
+            "Dombivli"
+          ]
+        },
+        {
+          "seq": 25,
+          "name": "Thakurli",
+          "code": "TKZ",
+          "km_from_origin": 51.6,
+          "km_from_previous": 2.3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Thakurli"
+          ]
+        },
+        {
+          "seq": 26,
+          "name": "Kalyan Junction",
+          "code": "KYN",
+          "km_from_origin": 53.9,
+          "km_from_previous": 2.3,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": 88,
+          "minutes_from_thane": null,
+          "map_km_from_origin": 53,
+          "aliases": [
+            "Kalyan Junction"
+          ]
+        },
+        {
+          "seq": 27,
+          "name": "Shahad",
+          "code": "SHAD",
+          "km_from_origin": 57,
+          "km_from_previous": 3.1,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Shahad"
+          ]
+        },
+        {
+          "seq": 28,
+          "name": "Ambivli",
+          "code": "ABY",
+          "km_from_origin": 60,
+          "km_from_previous": 3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Ambivli"
+          ]
+        },
+        {
+          "seq": 29,
+          "name": "Titwala",
+          "code": "TLA",
+          "km_from_origin": 64.4,
+          "km_from_previous": 4.4,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 113,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Titwala"
+          ]
+        },
+        {
+          "seq": 30,
+          "name": "Khadavli",
+          "code": "KDV",
+          "km_from_origin": 70.6,
+          "km_from_previous": 6.2,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Khadavali",
+            "Khadavli"
+          ]
+        },
+        {
+          "seq": 31,
+          "name": "Vasind",
+          "code": "VSD",
+          "km_from_origin": 76.9,
+          "km_from_previous": 6.3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vashind",
+            "Vasind"
+          ]
+        },
+        {
+          "seq": 32,
+          "name": "Asangaon",
+          "code": "ASO",
+          "km_from_origin": 82.6,
+          "km_from_previous": 5.7,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 125,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Asangaon"
+          ]
+        },
+        {
+          "seq": 33,
+          "name": "Atgaon",
+          "code": "ATG",
+          "km_from_origin": 89.4,
+          "km_from_previous": 6.8,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Atgaon"
+          ]
+        },
+        {
+          "seq": 34,
+          "name": "Thansit",
+          "code": "THS",
+          "km_from_origin": 94.5,
+          "km_from_previous": 5.1,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Thansit"
+          ]
+        },
+        {
+          "seq": 35,
+          "name": "Khardi",
+          "code": "KAD",
+          "km_from_origin": 99.7,
+          "km_from_previous": 5.2,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Khardi"
+          ]
+        },
+        {
+          "seq": 36,
+          "name": "Umbermali",
+          "code": "UBR",
+          "km_from_origin": 107.3,
+          "km_from_previous": 7.6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Umbermali"
+          ]
+        },
+        {
+          "seq": 37,
+          "name": "Kasara",
+          "code": "N",
+          "km_from_origin": 119.8,
+          "km_from_previous": 12.5,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 1,
+          "is_junction": false,
+          "minutes_from_origin": 155,
+          "minutes_from_thane": null,
+          "map_km_from_origin": 120,
+          "aliases": [
+            "Kasara"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "central_main_khopoli",
+      "name": "Central Line — CSMT to Khopoli",
+      "operator": "Central Railway (CR)",
+      "map_colour": "#9e1b23",
+      "origin": "Chhatrapati Shivaji Maharaj Terminus",
+      "terminus": "Khopoli",
+      "distance_confidence": "good",
+      "stations": [
+        {
+          "seq": 1,
+          "name": "Chhatrapati Shivaji Maharaj Terminus",
+          "code": "CSMT",
+          "km_from_origin": 0,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 1,
+          "is_junction": false,
+          "minutes_from_origin": 0,
+          "minutes_from_thane": null,
+          "map_km_from_origin": 0,
+          "aliases": [
+            "CSMT",
+            "CST",
+            "Chhatrapati Shivaji Maharaj Terminus",
+            "Mumbai CST",
+            "VT"
+          ]
+        },
+        {
+          "seq": 2,
+          "name": "Masjid",
+          "code": "MSD",
+          "km_from_origin": 1.4,
+          "km_from_previous": 1.4,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Masjid Bunder",
+            "Masjid"
+          ]
+        },
+        {
+          "seq": 3,
+          "name": "Sandhurst Road",
+          "code": "SNRD",
+          "km_from_origin": 2.3,
+          "km_from_previous": 0.9,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Sandhurst Road"
+          ]
+        },
+        {
+          "seq": 4,
+          "name": "Byculla",
+          "code": "BY",
+          "km_from_origin": 4,
+          "km_from_previous": 1.7,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Byculla"
+          ]
+        },
+        {
+          "seq": 5,
+          "name": "Chinchpokli",
+          "code": "CHG",
+          "km_from_origin": 5.2,
+          "km_from_previous": 1.2,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Chinchpokli"
+          ]
+        },
+        {
+          "seq": 6,
+          "name": "Currey Road",
+          "code": "CY",
+          "km_from_origin": 6.1,
+          "km_from_previous": 0.9,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Currey Road"
+          ]
+        },
+        {
+          "seq": 7,
+          "name": "Parel",
+          "code": "PR",
+          "km_from_origin": 7.1,
+          "km_from_previous": 1,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Parel"
+          ]
+        },
+        {
+          "seq": 8,
+          "name": "Dadar",
+          "code": "DR",
+          "km_from_origin": 9,
+          "km_from_previous": 1.9,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 18,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Dadar"
+          ]
+        },
+        {
+          "seq": 9,
+          "name": "Matunga",
+          "code": "MTN",
+          "km_from_origin": 10.9,
+          "km_from_previous": 1.9,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Matunga"
+          ]
+        },
+        {
+          "seq": 10,
+          "name": "Sion",
+          "code": "SIN",
+          "km_from_origin": 12.7,
+          "km_from_previous": 1.8,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Sion"
+          ]
+        },
+        {
+          "seq": 11,
+          "name": "Kurla",
+          "code": "CLA",
+          "km_from_origin": 15.8,
+          "km_from_previous": 3.1,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 4,
+          "is_junction": true,
+          "minutes_from_origin": 29,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kurla"
+          ]
+        },
+        {
+          "seq": 12,
+          "name": "Vidyavihar",
+          "code": "VVH",
+          "km_from_origin": 17.4,
+          "km_from_previous": 1.6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vidya Vihar",
+            "Vidyavihar"
+          ]
+        },
+        {
+          "seq": 13,
+          "name": "Ghatkopar",
+          "code": "GC",
+          "km_from_origin": 18.9,
+          "km_from_previous": 1.5,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Ghatkopar"
+          ]
+        },
+        {
+          "seq": 14,
+          "name": "Vikhroli",
+          "code": "VK",
+          "km_from_origin": 21.3,
+          "km_from_previous": 2.4,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vikhroli"
+          ]
+        },
+        {
+          "seq": 15,
+          "name": "Kanjurmarg",
+          "code": "KJRD",
+          "km_from_origin": 23.2,
+          "km_from_previous": 1.9,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kanjur Marg",
+            "Kanjurmarg"
+          ]
+        },
+        {
+          "seq": 16,
+          "name": "Bhandup",
+          "code": "BND",
+          "km_from_origin": 25,
+          "km_from_previous": 1.8,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Bhandup"
+          ]
+        },
+        {
+          "seq": 17,
+          "name": "Nahur",
+          "code": "NHU",
+          "km_from_origin": 26.6,
+          "km_from_previous": 1.6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Nahur"
+          ]
+        },
+        {
+          "seq": 18,
+          "name": "Mulund",
+          "code": "MLND",
+          "km_from_origin": 28.3,
+          "km_from_previous": 1.7,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Mulund"
+          ]
+        },
+        {
+          "seq": 19,
+          "name": "Thane",
+          "code": "TNA",
+          "km_from_origin": 33.7,
+          "km_from_previous": 5.4,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": 56,
+          "minutes_from_thane": null,
+          "map_km_from_origin": 33,
+          "aliases": [
+            "Thane"
+          ]
+        },
+        {
+          "seq": 20,
+          "name": "Kalwa",
+          "code": "KVA",
+          "km_from_origin": 36.5,
+          "km_from_previous": 2.8,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kalwa"
+          ]
+        },
+        {
+          "seq": 21,
+          "name": "Mumbra",
+          "code": "MBQ",
+          "km_from_origin": 40.8,
+          "km_from_previous": 4.3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Mumbra"
+          ]
+        },
+        {
+          "seq": 22,
+          "name": "Diva Junction",
+          "code": "DIVA",
+          "km_from_origin": 44.6,
+          "km_from_previous": 3.8,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": 70,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Diva Junction"
+          ]
+        },
+        {
+          "seq": 23,
+          "name": "Kopar",
+          "code": "KOPR",
+          "km_from_origin": 47,
+          "km_from_previous": 2.4,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kopar"
+          ]
+        },
+        {
+          "seq": 24,
+          "name": "Dombivli",
+          "code": "DI",
+          "km_from_origin": 49.3,
+          "km_from_previous": 2.3,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 79,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Dombivali",
+            "Dombivli"
+          ]
+        },
+        {
+          "seq": 25,
+          "name": "Thakurli",
+          "code": "TKZ",
+          "km_from_origin": 51.6,
+          "km_from_previous": 2.3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Thakurli"
+          ]
+        },
+        {
+          "seq": 26,
+          "name": "Kalyan Junction",
+          "code": "KYN",
+          "km_from_origin": 53.9,
+          "km_from_previous": 2.3,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": 88,
+          "minutes_from_thane": null,
+          "map_km_from_origin": 53,
+          "aliases": [
+            "Kalyan Junction"
+          ]
+        },
+        {
+          "seq": 27,
+          "name": "Vitthalwadi",
+          "code": "VLDI",
+          "km_from_origin": 56.2,
+          "km_from_previous": 2.3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vitthalvadi",
+            "Vithalwadi",
+            "Vitthalwadi"
+          ]
+        },
+        {
+          "seq": 28,
+          "name": "Ulhasnagar",
+          "code": "ULNR",
+          "km_from_origin": 58.2,
+          "km_from_previous": 2,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Ulhasnagar"
+          ]
+        },
+        {
+          "seq": 29,
+          "name": "Ambarnath",
+          "code": "ABH",
+          "km_from_origin": 61,
+          "km_from_previous": 2.8,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 102,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Ambernath",
+            "Ambarnath"
+          ]
+        },
+        {
+          "seq": 30,
+          "name": "Badlapur",
+          "code": "BUD",
+          "km_from_origin": 68,
+          "km_from_previous": 7,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 110,
+          "minutes_from_thane": null,
+          "map_km_from_origin": 67,
+          "aliases": [
+            "Badlapur"
+          ]
+        },
+        {
+          "seq": 31,
+          "name": "Vangani",
+          "code": "VGI",
+          "km_from_origin": 75,
+          "km_from_previous": 7,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vangani"
+          ]
+        },
+        {
+          "seq": 32,
+          "name": "Shelu",
+          "code": "SHLU",
+          "km_from_origin": 79.6,
+          "km_from_previous": 4.6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Shelu"
+          ]
+        },
+        {
+          "seq": 33,
+          "name": "Neral Junction",
+          "code": "NRL",
+          "km_from_origin": 83.9,
+          "km_from_previous": 4.3,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Neral"
+          ]
+        },
+        {
+          "seq": 34,
+          "name": "Bhivpuri Road",
+          "code": "BVS",
+          "km_from_origin": 90.4,
+          "km_from_previous": 6.5,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Bhivpuri Rd.",
+            "Bhivpuri Road"
+          ]
+        },
+        {
+          "seq": 35,
+          "name": "Karjat Junction",
+          "code": "KJT",
+          "km_from_origin": 99.9,
+          "km_from_previous": 9.5,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 143,
+          "minutes_from_thane": null,
+          "map_km_from_origin": 100,
+          "aliases": [
+            "Karjat Junction"
+          ]
+        },
+        {
+          "seq": 36,
+          "name": "Palasdhari",
+          "code": "PDI",
+          "km_from_origin": 102.4,
+          "km_from_previous": 2.5,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Palasdhari",
+            "Palasdari"
+          ]
+        },
+        {
+          "seq": 37,
+          "name": "Kelavli",
+          "code": "KELE",
+          "km_from_origin": 105.9,
+          "km_from_previous": 3.5,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kelavali",
+            "Kelavli"
+          ]
+        },
+        {
+          "seq": 38,
+          "name": "Dolavli",
+          "code": "DLV",
+          "km_from_origin": 108.9,
+          "km_from_previous": 3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Dolavali",
+            "Dolavli"
+          ]
+        },
+        {
+          "seq": 39,
+          "name": "Lowjee",
+          "code": "LWJ",
+          "km_from_origin": 111.5,
+          "km_from_previous": 2.6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Lowjee"
+          ]
+        },
+        {
+          "seq": 40,
+          "name": "Khopoli",
+          "code": "KP",
+          "km_from_origin": 113.9,
+          "km_from_previous": 2.4,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 1,
+          "is_junction": false,
+          "minutes_from_origin": 168,
+          "minutes_from_thane": null,
+          "map_km_from_origin": 114,
+          "aliases": [
+            "Khopoli"
+          ]
+        }
+      ],
+      "note": "Shares CSMT–Kalyan with the Kasara branch."
+    },
+    {
+      "id": "harbour_panvel",
+      "name": "Harbour Line — CSMT to Panvel",
+      "operator": "Central Railway (CR)",
+      "map_colour": "#1a7a3c",
+      "origin": "Chhatrapati Shivaji Maharaj Terminus",
+      "terminus": "Panvel",
+      "distance_confidence": "approximate",
+      "stations": [
+        {
+          "seq": 1,
+          "name": "Chhatrapati Shivaji Maharaj Terminus",
+          "code": "CSMT",
+          "km_from_origin": 0,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 1,
+          "is_junction": false,
+          "minutes_from_origin": 0,
+          "minutes_from_thane": null,
+          "map_km_from_origin": 0,
+          "aliases": [
+            "CSMT",
+            "CST",
+            "Chhatrapati Shivaji Maharaj Terminus",
+            "Mumbai CST",
+            "VT"
+          ]
+        },
+        {
+          "seq": 2,
+          "name": "Masjid",
+          "code": "MSD",
+          "km_from_origin": 1.4,
+          "km_from_previous": 1.4,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Masjid Bunder",
+            "Masjid"
+          ]
+        },
+        {
+          "seq": 3,
+          "name": "Sandhurst Road",
+          "code": "SNRD",
+          "km_from_origin": 2.3,
+          "km_from_previous": 0.9,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Sandhurst Road"
+          ]
+        },
+        {
+          "seq": 4,
+          "name": "Dockyard Road",
+          "code": "DKRD",
+          "km_from_origin": 4.6,
+          "km_from_previous": 2.3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Dockyard Road"
+          ]
+        },
+        {
+          "seq": 5,
+          "name": "Reay Road",
+          "code": "RRD",
+          "km_from_origin": 6,
+          "km_from_previous": 1.4,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Reay Road"
+          ]
+        },
+        {
+          "seq": 6,
+          "name": "Cotton Green",
+          "code": "CTGN",
+          "km_from_origin": 7.3,
+          "km_from_previous": 1.3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Cotton Green"
+          ]
+        },
+        {
+          "seq": 7,
+          "name": "Sewri",
+          "code": "SVE",
+          "km_from_origin": 9,
+          "km_from_previous": 1.7,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Sewri"
+          ]
+        },
+        {
+          "seq": 8,
+          "name": "Vadala Road",
+          "code": "VDLR",
+          "km_from_origin": 11.2,
+          "km_from_previous": 2.2,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": 18,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vadala",
+            "Wadala",
+            "Vadala Road",
+            "Wadala Road"
+          ]
+        },
+        {
+          "seq": 9,
+          "name": "GTB Nagar",
+          "code": "GTBN",
+          "km_from_origin": 13,
+          "km_from_previous": 1.8,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "GTB Nagar"
+          ]
+        },
+        {
+          "seq": 10,
+          "name": "Chunabhatti",
+          "code": "CLF",
+          "km_from_origin": 14.9,
+          "km_from_previous": 1.9,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Chuna Bhatti",
+            "Chunabhatti"
+          ]
+        },
+        {
+          "seq": 11,
+          "name": "Kurla",
+          "code": "CLA",
+          "km_from_origin": 17.6,
+          "km_from_previous": 2.7,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 4,
+          "is_junction": true,
+          "minutes_from_origin": 28,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kurla"
+          ]
+        },
+        {
+          "seq": 12,
+          "name": "Tilak Nagar",
+          "code": "TNX",
+          "km_from_origin": 19.1,
+          "km_from_previous": 1.5,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Tilak Nagar"
+          ]
+        },
+        {
+          "seq": 13,
+          "name": "Chembur",
+          "code": "CMBR",
+          "km_from_origin": 20.6,
+          "km_from_previous": 1.5,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Chembur"
+          ]
+        },
+        {
+          "seq": 14,
+          "name": "Govandi",
+          "code": "GVN",
+          "km_from_origin": 22.2,
+          "km_from_previous": 1.6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Govandi"
+          ]
+        },
+        {
+          "seq": 15,
+          "name": "Mankhurd",
+          "code": "MNKD",
+          "km_from_origin": 23.9,
+          "km_from_previous": 1.7,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 39,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Mankhurd"
+          ]
+        },
+        {
+          "seq": 16,
+          "name": "Vashi",
+          "code": "VSH",
+          "km_from_origin": 29.2,
+          "km_from_previous": 5.3,
+          "is_routing_point": true,
+          "cidco_surcharge": true,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 47,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vashi"
+          ]
+        },
+        {
+          "seq": 17,
+          "name": "Sanpada",
+          "code": "SNPD",
+          "km_from_origin": 31.6,
+          "km_from_previous": 2.4,
+          "is_routing_point": false,
+          "cidco_surcharge": true,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Sanpada"
+          ]
+        },
+        {
+          "seq": 18,
+          "name": "Juinagar",
+          "code": "JNJ",
+          "km_from_origin": 33.6,
+          "km_from_previous": 2,
+          "is_routing_point": false,
+          "cidco_surcharge": true,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Juinagar"
+          ]
+        },
+        {
+          "seq": 19,
+          "name": "Nerul",
+          "code": "NEU",
+          "km_from_origin": 35.8,
+          "km_from_previous": 2.2,
+          "is_routing_point": true,
+          "cidco_surcharge": true,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 57,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Nerul"
+          ]
+        },
+        {
+          "seq": 20,
+          "name": "Seawoods-Darave",
+          "code": "SWDV",
+          "km_from_origin": 37.9,
+          "km_from_previous": 2.1,
+          "is_routing_point": false,
+          "cidco_surcharge": true,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Seawoods Darave",
+            "Seawoods-Darave"
+          ]
+        },
+        {
+          "seq": 21,
+          "name": "Belapur CBD",
+          "code": "BEPR",
+          "km_from_origin": 40.2,
+          "km_from_previous": 2.3,
+          "is_routing_point": true,
+          "cidco_surcharge": true,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 64,
+          "minutes_from_thane": 37,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Belapur CBD"
+          ]
+        },
+        {
+          "seq": 22,
+          "name": "Kharghar",
+          "code": "KHAG",
+          "km_from_origin": 43.9,
+          "km_from_previous": 3.7,
+          "is_routing_point": false,
+          "cidco_surcharge": true,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kharghar"
+          ]
+        },
+        {
+          "seq": 23,
+          "name": "Manasarovar",
+          "code": "MSRV",
+          "km_from_origin": 46,
+          "km_from_previous": 2.1,
+          "is_routing_point": false,
+          "cidco_surcharge": true,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Manasarovar",
+            "Mansarovar"
+          ]
+        },
+        {
+          "seq": 24,
+          "name": "Khandeshwar",
+          "code": "KNDS",
+          "km_from_origin": 48.4,
+          "km_from_previous": 2.4,
+          "is_routing_point": false,
+          "cidco_surcharge": true,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Khandeshwar"
+          ]
+        },
+        {
+          "seq": 25,
+          "name": "Panvel",
+          "code": "PNVL",
+          "km_from_origin": 51.8,
+          "km_from_previous": 3.4,
+          "is_routing_point": true,
+          "cidco_surcharge": true,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": 80,
+          "minutes_from_thane": 53,
+          "map_km_from_origin": 68,
+          "aliases": [
+            "Panvel"
+          ]
+        }
+      ],
+      "note": "The map's '68 km' at Panvel is chainage via Diva–Panvel, not the Harbour route (~49 km)."
+    },
+    {
+      "id": "harbour_goregaon",
+      "name": "Harbour Line — CSMT to Goregaon",
+      "operator": "Central Railway (CR)",
+      "map_colour": "#1a7a3c",
+      "origin": "Chhatrapati Shivaji Maharaj Terminus",
+      "terminus": "Goregaon",
+      "distance_confidence": "approximate",
+      "stations": [
+        {
+          "seq": 1,
+          "name": "Chhatrapati Shivaji Maharaj Terminus",
+          "code": "CSMT",
+          "km_from_origin": 0,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 1,
+          "is_junction": false,
+          "minutes_from_origin": 0,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "CSMT",
+            "CST",
+            "Chhatrapati Shivaji Maharaj Terminus",
+            "Mumbai CST",
+            "VT"
+          ]
+        },
+        {
+          "seq": 2,
+          "name": "Masjid",
+          "code": "MSD",
+          "km_from_origin": 1.4,
+          "km_from_previous": 1.4,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Masjid Bunder",
+            "Masjid"
+          ]
+        },
+        {
+          "seq": 3,
+          "name": "Sandhurst Road",
+          "code": "SNRD",
+          "km_from_origin": 2.3,
+          "km_from_previous": 0.9,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Sandhurst Road"
+          ]
+        },
+        {
+          "seq": 4,
+          "name": "Dockyard Road",
+          "code": "DKRD",
+          "km_from_origin": 4.6,
+          "km_from_previous": 2.3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Dockyard Road"
+          ]
+        },
+        {
+          "seq": 5,
+          "name": "Reay Road",
+          "code": "RRD",
+          "km_from_origin": 6,
+          "km_from_previous": 1.4,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Reay Road"
+          ]
+        },
+        {
+          "seq": 6,
+          "name": "Cotton Green",
+          "code": "CTGN",
+          "km_from_origin": 7.3,
+          "km_from_previous": 1.3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Cotton Green"
+          ]
+        },
+        {
+          "seq": 7,
+          "name": "Sewri",
+          "code": "SVE",
+          "km_from_origin": 9,
+          "km_from_previous": 1.7,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Sewri"
+          ]
+        },
+        {
+          "seq": 8,
+          "name": "Vadala Road",
+          "code": "VDLR",
+          "km_from_origin": 11.2,
+          "km_from_previous": 2.2,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": 18,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vadala",
+            "Wadala",
+            "Vadala Road",
+            "Wadala Road"
+          ]
+        },
+        {
+          "seq": 9,
+          "name": "King's Circle",
+          "code": "KCE",
+          "km_from_origin": 13,
+          "km_from_previous": 1.8,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "King's Circle"
+          ]
+        },
+        {
+          "seq": 10,
+          "name": "Mahim Junction",
+          "code": "MM",
+          "km_from_origin": 15,
+          "km_from_previous": 2,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Mahim Junction"
+          ]
+        },
+        {
+          "seq": 11,
+          "name": "Bandra",
+          "code": "BA",
+          "km_from_origin": 17,
+          "km_from_previous": 2,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 28,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Bandra"
+          ]
+        },
+        {
+          "seq": 12,
+          "name": "Khar Road",
+          "code": "KHAR",
+          "km_from_origin": 18.8,
+          "km_from_previous": 1.8,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Khar Road"
+          ]
+        },
+        {
+          "seq": 13,
+          "name": "Santacruz",
+          "code": "STC",
+          "km_from_origin": 20.2,
+          "km_from_previous": 1.4,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Santacruz"
+          ]
+        },
+        {
+          "seq": 14,
+          "name": "Vile Parle",
+          "code": "VLP",
+          "km_from_origin": 21.9,
+          "km_from_previous": 1.7,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vile Parle"
+          ]
+        },
+        {
+          "seq": 15,
+          "name": "Andheri",
+          "code": "ADH",
+          "km_from_origin": 24.2,
+          "km_from_previous": 2.3,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 43,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Andheri"
+          ]
+        },
+        {
+          "seq": 16,
+          "name": "Jogeshwari",
+          "code": "JOS",
+          "km_from_origin": 26.2,
+          "km_from_previous": 2,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Jogeshwari"
+          ]
+        },
+        {
+          "seq": 17,
+          "name": "Ram Mandir",
+          "code": "RMAR",
+          "km_from_origin": 27.8,
+          "km_from_previous": 1.6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Ram Mandir"
+          ]
+        },
+        {
+          "seq": 18,
+          "name": "Goregaon",
+          "code": "GMN",
+          "km_from_origin": 29.3,
+          "km_from_previous": 1.5,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Goregaon"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trans_harbour_vashi",
+      "name": "Trans-Harbour — Thane to Vashi",
+      "operator": "Central Railway (CR)",
+      "map_colour": "#7b2d8b",
+      "origin": "Thane",
+      "terminus": "Vashi",
+      "distance_confidence": "estimated",
+      "stations": [
+        {
+          "seq": 1,
+          "name": "Thane",
+          "code": "TNA",
+          "km_from_origin": 0,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": 0,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Thane"
+          ]
+        },
+        {
+          "seq": 2,
+          "name": "Airoli",
+          "code": "AWL",
+          "km_from_origin": 6,
+          "km_from_previous": 6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Airoli"
+          ]
+        },
+        {
+          "seq": 3,
+          "name": "Rabale",
+          "code": "RABL",
+          "km_from_origin": 9,
+          "km_from_previous": 3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Rabale"
+          ]
+        },
+        {
+          "seq": 4,
+          "name": "Ghansoli",
+          "code": "GNSL",
+          "km_from_origin": 12,
+          "km_from_previous": 3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Ghansoli"
+          ]
+        },
+        {
+          "seq": 5,
+          "name": "Kopar Khairane",
+          "code": "KOKN",
+          "km_from_origin": 15.5,
+          "km_from_previous": 3.5,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kopar Khairane"
+          ]
+        },
+        {
+          "seq": 6,
+          "name": "Turbhe",
+          "code": "TUBH",
+          "km_from_origin": 19,
+          "km_from_previous": 3.5,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Turbhe"
+          ]
+        },
+        {
+          "seq": 7,
+          "name": "Sanpada",
+          "code": "SNPD",
+          "km_from_origin": 22,
+          "km_from_previous": 3,
+          "is_routing_point": false,
+          "cidco_surcharge": true,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Sanpada"
+          ]
+        },
+        {
+          "seq": 8,
+          "name": "Vashi",
+          "code": "VSH",
+          "km_from_origin": 24,
+          "km_from_previous": 2,
+          "is_routing_point": true,
+          "cidco_surcharge": true,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 27,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vashi"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trans_harbour_nerul",
+      "name": "Trans-Harbour — Thane to Nerul",
+      "operator": "Central Railway (CR)",
+      "map_colour": "#7b2d8b",
+      "origin": "Thane",
+      "terminus": "Nerul",
+      "distance_confidence": "estimated",
+      "stations": [
+        {
+          "seq": 1,
+          "name": "Thane",
+          "code": "TNA",
+          "km_from_origin": 0,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": 0,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Thane"
+          ]
+        },
+        {
+          "seq": 2,
+          "name": "Airoli",
+          "code": "AWL",
+          "km_from_origin": 6,
+          "km_from_previous": 6,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Airoli"
+          ]
+        },
+        {
+          "seq": 3,
+          "name": "Rabale",
+          "code": "RABL",
+          "km_from_origin": 9,
+          "km_from_previous": 3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Rabale"
+          ]
+        },
+        {
+          "seq": 4,
+          "name": "Ghansoli",
+          "code": "GNSL",
+          "km_from_origin": 12,
+          "km_from_previous": 3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Ghansoli"
+          ]
+        },
+        {
+          "seq": 5,
+          "name": "Kopar Khairane",
+          "code": "KOKN",
+          "km_from_origin": 15.5,
+          "km_from_previous": 3.5,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kopar Khairane"
+          ]
+        },
+        {
+          "seq": 6,
+          "name": "Turbhe",
+          "code": "TUBH",
+          "km_from_origin": 19,
+          "km_from_previous": 3.5,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Turbhe"
+          ]
+        },
+        {
+          "seq": 7,
+          "name": "Juinagar",
+          "code": "JNJ",
+          "km_from_origin": 22,
+          "km_from_previous": 3,
+          "is_routing_point": false,
+          "cidco_surcharge": true,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Juinagar"
+          ]
+        },
+        {
+          "seq": 8,
+          "name": "Nerul",
+          "code": "NEU",
+          "km_from_origin": 24,
+          "km_from_previous": 2,
+          "is_routing_point": true,
+          "cidco_surcharge": true,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": 30,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Nerul"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nerul_uran",
+      "name": "Nerul/Belapur–Uran (Port Line)",
+      "operator": "Central Railway (CR)",
+      "map_colour": "#8fa8b8",
+      "origin": "Nerul",
+      "terminus": "Uran",
+      "distance_confidence": "estimated",
+      "stations": [
+        {
+          "seq": 1,
+          "name": "Nerul",
+          "code": "NEU",
+          "km_from_origin": 0,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": true,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Nerul"
+          ],
+          "status_on_map": "operational"
+        },
+        {
+          "seq": 2,
+          "name": "Seawoods-Darave",
+          "code": "SWDV",
+          "km_from_origin": 2.1,
+          "km_from_previous": 2.1,
+          "is_routing_point": false,
+          "cidco_surcharge": true,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Seawoods Darave",
+            "Seawoods-Darave"
+          ],
+          "status_on_map": "operational"
+        },
+        {
+          "seq": 3,
+          "name": "Targhar",
+          "code": "TARG",
+          "km_from_origin": 5,
+          "km_from_previous": 2.9,
+          "is_routing_point": false,
+          "cidco_surcharge": true,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Targhar"
+          ],
+          "status_on_map": "operational"
+        },
+        {
+          "seq": 4,
+          "name": "Bamandongri",
+          "code": "BMDG",
+          "km_from_origin": 8,
+          "km_from_previous": 3,
+          "is_routing_point": false,
+          "cidco_surcharge": true,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Bamandongari",
+            "Bamandongri"
+          ],
+          "status_on_map": "operational"
+        },
+        {
+          "seq": 5,
+          "name": "Kharkopar",
+          "code": "KHOP",
+          "km_from_origin": 10,
+          "km_from_previous": 2,
+          "is_routing_point": false,
+          "cidco_surcharge": true,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kharkopar"
+          ],
+          "status_on_map": "operational"
+        },
+        {
+          "seq": 6,
+          "name": "Gavhan",
+          "code": "GAVN",
+          "km_from_origin": 14,
+          "km_from_previous": 4,
+          "is_routing_point": false,
+          "cidco_surcharge": true,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Gavan",
+            "Gavhan"
+          ],
+          "status_on_map": "under_construction"
+        },
+        {
+          "seq": 7,
+          "name": "Ranjanpada",
+          "code": "RJPD",
+          "km_from_origin": 17,
+          "km_from_previous": 3,
+          "is_routing_point": false,
+          "cidco_surcharge": true,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Ranjan Pada",
+            "Ranjanpada"
+          ],
+          "status_on_map": "under_construction"
+        },
+        {
+          "seq": 8,
+          "name": "Nhava Sheva",
+          "code": "NSCT",
+          "km_from_origin": 22,
+          "km_from_previous": 5,
+          "is_routing_point": false,
+          "cidco_surcharge": true,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Nhava Sheva"
+          ],
+          "status_on_map": "under_construction"
+        },
+        {
+          "seq": 9,
+          "name": "Dronagiri",
+          "code": "DRGI",
+          "km_from_origin": 25,
+          "km_from_previous": 3,
+          "is_routing_point": false,
+          "cidco_surcharge": true,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Dronagiri",
+            "Dronagiri"
+          ],
+          "status_on_map": "under_construction"
+        },
+        {
+          "seq": 10,
+          "name": "Uran",
+          "code": "URAN",
+          "km_from_origin": 27,
+          "km_from_previous": 2,
+          "is_routing_point": true,
+          "cidco_surcharge": true,
+          "degree": 1,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Uran"
+          ],
+          "status_on_map": "under_construction"
+        }
+      ]
+    },
+    {
+      "id": "vasai_roha",
+      "name": "Vasai Road–Diva–Panvel–Roha",
+      "operator": "Central Railway (CR)",
+      "map_colour": "#5bb8e8",
+      "origin": "Vasai Road",
+      "terminus": "Roha",
+      "distance_confidence": "not available",
+      "stations": [
+        {
+          "seq": 1,
+          "name": "Vasai Road",
+          "code": "BSR",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Vasai Road"
+          ]
+        },
+        {
+          "seq": 2,
+          "name": "Juchandra",
+          "code": "JUC",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Juchandra"
+          ]
+        },
+        {
+          "seq": 3,
+          "name": "Kaman Road",
+          "code": "KAMN",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kaman Road"
+          ]
+        },
+        {
+          "seq": 4,
+          "name": "Kharbao",
+          "code": "KRBW",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kharbao"
+          ]
+        },
+        {
+          "seq": 5,
+          "name": "Bhiwandi Road",
+          "code": "BIRD",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Bhiwandi",
+            "Bhiwandi Road"
+          ]
+        },
+        {
+          "seq": 6,
+          "name": "Kopar",
+          "code": "KOPR",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kopar"
+          ]
+        },
+        {
+          "seq": 7,
+          "name": "Diva Junction",
+          "code": "DIVA",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Diva Junction"
+          ]
+        },
+        {
+          "seq": 8,
+          "name": "Dativali",
+          "code": "DTV",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Dativali"
+          ]
+        },
+        {
+          "seq": 9,
+          "name": "Nilje",
+          "code": "NIJ",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Nilaje",
+            "Nilje"
+          ]
+        },
+        {
+          "seq": 10,
+          "name": "Taloja Panchanand",
+          "code": "TLPD",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Taloja",
+            "Taloja Panchanand"
+          ]
+        },
+        {
+          "seq": 11,
+          "name": "Navade Road",
+          "code": "NWRD",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Navade Road"
+          ]
+        },
+        {
+          "seq": 12,
+          "name": "Kalamboli",
+          "code": "KLMG",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kalamboli"
+          ]
+        },
+        {
+          "seq": 13,
+          "name": "Panvel",
+          "code": "PNVL",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": true,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Panvel"
+          ]
+        },
+        {
+          "seq": 14,
+          "name": "Somatne",
+          "code": "SMNE",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Somatne"
+          ]
+        },
+        {
+          "seq": 15,
+          "name": "Rasayani",
+          "code": "RSNI",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Rasayani"
+          ]
+        },
+        {
+          "seq": 16,
+          "name": "Apta",
+          "code": "APTA",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Apta"
+          ]
+        },
+        {
+          "seq": 17,
+          "name": "Jite",
+          "code": "JITE",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Jite"
+          ]
+        },
+        {
+          "seq": 18,
+          "name": "Hamrapur",
+          "code": "HMP",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Hamrapur"
+          ]
+        },
+        {
+          "seq": 19,
+          "name": "Pen",
+          "code": "PEN",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Pen"
+          ]
+        },
+        {
+          "seq": 20,
+          "name": "Kasu",
+          "code": "KASU",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Kasu"
+          ]
+        },
+        {
+          "seq": 21,
+          "name": "Nagothane",
+          "code": "NGTN",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Nagothane"
+          ]
+        },
+        {
+          "seq": 22,
+          "name": "Roha",
+          "code": "ROHA",
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 1,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Roha"
+          ]
+        }
+      ],
+      "note": "MEMU services. Distances null — take from the IR working timetable."
+    },
+    {
+      "id": "neral_matheran",
+      "name": "Neral–Matheran Hill Railway",
+      "operator": "Central Railway (CR)",
+      "map_colour": "#8fa8b8",
+      "origin": "Neral Junction",
+      "terminus": "Matheran",
+      "distance_confidence": "approximate",
+      "gauge": "762 mm",
+      "stations": [
+        {
+          "seq": 1,
+          "name": "Neral Junction",
+          "code": "NRL",
+          "km_from_origin": 0,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 3,
+          "is_junction": true,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Neral"
+          ]
+        },
+        {
+          "seq": 2,
+          "name": "Jummapatti",
+          "code": "JMP",
+          "km_from_origin": 7.5,
+          "km_from_previous": 7.5,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Jummapatti"
+          ]
+        },
+        {
+          "seq": 3,
+          "name": "Waterpipe",
+          "code": "WTP",
+          "km_from_origin": 12,
+          "km_from_previous": 4.5,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Waterpipe"
+          ]
+        },
+        {
+          "seq": 4,
+          "name": "Aman Lodge",
+          "code": "AMLD",
+          "km_from_origin": 19,
+          "km_from_previous": 7,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 2,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Aman Lodge"
+          ]
+        },
+        {
+          "seq": 5,
+          "name": "Matheran",
+          "code": "MAE",
+          "km_from_origin": 21,
+          "km_from_previous": 2,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 1,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Matheran"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "metro_line_1",
+      "name": "Mumbai Metro Line 1 (Blue)",
+      "operator": "MMOPL",
+      "map_colour": "#f5a623",
+      "origin": "Versova",
+      "terminus": "Ghatkopar",
+      "distance_confidence": "approximate",
+      "stations": [
+        {
+          "seq": 1,
+          "name": "Versova",
+          "code": null,
+          "km_from_origin": 0,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Versova"
+          ]
+        },
+        {
+          "seq": 2,
+          "name": "D N Nagar",
+          "code": null,
+          "km_from_origin": 1,
+          "km_from_previous": 1,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "D N Nagar"
+          ]
+        },
+        {
+          "seq": 3,
+          "name": "Azad Nagar",
+          "code": null,
+          "km_from_origin": 1.9,
+          "km_from_previous": 0.9,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Azad Nagar"
+          ]
+        },
+        {
+          "seq": 4,
+          "name": "Andheri",
+          "code": null,
+          "km_from_origin": 3,
+          "km_from_previous": 1.1,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Andheri"
+          ]
+        },
+        {
+          "seq": 5,
+          "name": "Western Express Highway",
+          "code": null,
+          "km_from_origin": 4,
+          "km_from_previous": 1,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Western Express Highway"
+          ]
+        },
+        {
+          "seq": 6,
+          "name": "Chakala (JB Nagar)",
+          "code": null,
+          "km_from_origin": 5.3,
+          "km_from_previous": 1.3,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Chakala (JB Nagar)"
+          ]
+        },
+        {
+          "seq": 7,
+          "name": "Airport Road",
+          "code": null,
+          "km_from_origin": 6.4,
+          "km_from_previous": 1.1,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Airport Road"
+          ]
+        },
+        {
+          "seq": 8,
+          "name": "Marol Naka",
+          "code": null,
+          "km_from_origin": 7.3,
+          "km_from_previous": 0.9,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Marol Naka"
+          ]
+        },
+        {
+          "seq": 9,
+          "name": "Saki Naka",
+          "code": null,
+          "km_from_origin": 8.5,
+          "km_from_previous": 1.2,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Saki Naka"
+          ]
+        },
+        {
+          "seq": 10,
+          "name": "Asalpha",
+          "code": null,
+          "km_from_origin": 9.4,
+          "km_from_previous": 0.9,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Asalpha"
+          ]
+        },
+        {
+          "seq": 11,
+          "name": "Jagruti Nagar",
+          "code": null,
+          "km_from_origin": 10.2,
+          "km_from_previous": 0.8,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Jagruti Nagar"
+          ]
+        },
+        {
+          "seq": 12,
+          "name": "Ghatkopar",
+          "code": null,
+          "km_from_origin": 11.4,
+          "km_from_previous": 1.2,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Ghatkopar"
+          ]
+        }
+      ],
+      "fare_system": "separate_metro_tariff"
+    },
+    {
+      "id": "monorail_line_1",
+      "name": "Mumbai Monorail Line 1",
+      "operator": "MMRDA",
+      "map_colour": "#f26522",
+      "origin": "Chembur",
+      "terminus": "Sant Gadge Maharaj Chowk",
+      "distance_confidence": "line length only",
+      "stations": [
+        {
+          "seq": 1,
+          "name": "Chembur",
+          "code": null,
+          "km_from_origin": 0,
+          "km_from_previous": null,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Chembur"
+          ]
+        },
+        {
+          "seq": 2,
+          "name": "VNP & RC Marg Junction",
+          "code": null,
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "VNP & RC Marg Junction"
+          ]
+        },
+        {
+          "seq": 3,
+          "name": "Fertilizer Township",
+          "code": null,
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Fertilizer Township"
+          ]
+        },
+        {
+          "seq": 4,
+          "name": "Bharat Petroleum",
+          "code": null,
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Bharat Petroleum"
+          ]
+        },
+        {
+          "seq": 5,
+          "name": "Mysore Colony",
+          "code": null,
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Mysore Colony"
+          ]
+        },
+        {
+          "seq": 6,
+          "name": "Bhakti Park",
+          "code": null,
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Bhakti Park"
+          ]
+        },
+        {
+          "seq": 7,
+          "name": "Wadala Depot",
+          "code": null,
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Wadala Depot"
+          ]
+        },
+        {
+          "seq": 8,
+          "name": "Acharya Atre Nagar",
+          "code": null,
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Acharya Atre Nagar"
+          ]
+        },
+        {
+          "seq": 9,
+          "name": "Antop Hill",
+          "code": null,
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Antop Hill"
+          ]
+        },
+        {
+          "seq": 10,
+          "name": "GTB Nagar (Mono)",
+          "code": null,
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "GTB Nagar (Mono)"
+          ]
+        },
+        {
+          "seq": 11,
+          "name": "Wadala Bridge",
+          "code": null,
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Wadala Bridge"
+          ]
+        },
+        {
+          "seq": 12,
+          "name": "Dadar East",
+          "code": null,
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Dadar East"
+          ]
+        },
+        {
+          "seq": 13,
+          "name": "Naigaon (Mono)",
+          "code": null,
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Naigaon (Mono)"
+          ]
+        },
+        {
+          "seq": 14,
+          "name": "Ambedkar Nagar",
+          "code": null,
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Ambedkar Nagar"
+          ]
+        },
+        {
+          "seq": 15,
+          "name": "Mint Colony",
+          "code": null,
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Mint Colony"
+          ]
+        },
+        {
+          "seq": 16,
+          "name": "Lower Parel (Mono)",
+          "code": null,
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Lower Parel (Mono)"
+          ]
+        },
+        {
+          "seq": 17,
+          "name": "Chinchpokli (Mono)",
+          "code": null,
+          "km_from_origin": null,
+          "km_from_previous": null,
+          "is_routing_point": false,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Chinchpokli (Mono)"
+          ]
+        },
+        {
+          "seq": 18,
+          "name": "Sant Gadge Maharaj Chowk (Jacob Circle)",
+          "code": null,
+          "km_from_origin": 19.5,
+          "km_from_previous": 19.5,
+          "is_routing_point": true,
+          "cidco_surcharge": false,
+          "degree": 0,
+          "is_junction": false,
+          "minutes_from_origin": null,
+          "minutes_from_thane": null,
+          "map_km_from_origin": null,
+          "aliases": [
+            "Sant Gadge Maharaj Chowk (Jacob Circle)"
+          ]
+        }
+      ],
+      "fare_system": "separate_monorail_tariff"
+    }
+  ],
+  "edges": [
+    {
+      "from": "ABH",
+      "to": "BUD",
+      "km": 7,
+      "lines": [
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "ABH",
+      "to": "ULNR",
+      "km": 2.8,
+      "lines": [
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "ABY",
+      "to": "SHAD",
+      "km": 3,
+      "lines": [
+        "central_main_kasara"
+      ]
+    },
+    {
+      "from": "ABY",
+      "to": "TLA",
+      "km": 4.4,
+      "lines": [
+        "central_main_kasara"
+      ]
+    },
+    {
+      "from": "ADH",
+      "to": "JOS",
+      "km": 2,
+      "lines": [
+        "western",
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "ADH",
+      "to": "VLP",
+      "km": 2.3,
+      "lines": [
+        "western",
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "AMLD",
+      "to": "MAE",
+      "km": 2,
+      "lines": [
+        "neral_matheran"
+      ]
+    },
+    {
+      "from": "AMLD",
+      "to": "WTP",
+      "km": 7,
+      "lines": [
+        "neral_matheran"
+      ]
+    },
+    {
+      "from": "APTA",
+      "to": "JITE",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "APTA",
+      "to": "RSNI",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "ASO",
+      "to": "ATG",
+      "km": 6.8,
+      "lines": [
+        "central_main_kasara"
+      ]
+    },
+    {
+      "from": "ASO",
+      "to": "VSD",
+      "km": 5.7,
+      "lines": [
+        "central_main_kasara"
+      ]
+    },
+    {
+      "from": "ATG",
+      "to": "THS",
+      "km": 5.1,
+      "lines": [
+        "central_main_kasara"
+      ]
+    },
+    {
+      "from": "AWL",
+      "to": "RABL",
+      "km": 3,
+      "lines": [
+        "trans_harbour_vashi",
+        "trans_harbour_nerul"
+      ]
+    },
+    {
+      "from": "AWL",
+      "to": "TNA",
+      "km": 6,
+      "lines": [
+        "trans_harbour_vashi",
+        "trans_harbour_nerul"
+      ]
+    },
+    {
+      "from": "BA",
+      "to": "KHAR",
+      "km": 1.8,
+      "lines": [
+        "western",
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "BA",
+      "to": "MM",
+      "km": 2,
+      "lines": [
+        "western",
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "BCT",
+      "to": "GTR",
+      "km": 1.3,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "BCT",
+      "to": "MX",
+      "km": 1.2,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "BEPR",
+      "to": "KHAG",
+      "km": 3.7,
+      "lines": [
+        "harbour_panvel"
+      ]
+    },
+    {
+      "from": "BEPR",
+      "to": "SWDV",
+      "km": 2.3,
+      "lines": [
+        "harbour_panvel"
+      ]
+    },
+    {
+      "from": "BIRD",
+      "to": "KOPR",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "BIRD",
+      "to": "KRBW",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "BMDG",
+      "to": "KHOP",
+      "km": 2,
+      "lines": [
+        "nerul_uran"
+      ]
+    },
+    {
+      "from": "BMDG",
+      "to": "TARG",
+      "km": 3,
+      "lines": [
+        "nerul_uran"
+      ]
+    },
+    {
+      "from": "BND",
+      "to": "KJRD",
+      "km": 1.8,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "BND",
+      "to": "NHU",
+      "km": 1.6,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "BOR",
+      "to": "UMR",
+      "km": 6.2,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "BOR",
+      "to": "VGN",
+      "km": 9,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "BSR",
+      "to": "JUC",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "BSR",
+      "to": "NIG",
+      "km": 3.3,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "BSR",
+      "to": "NSP",
+      "km": 4.2,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "BUD",
+      "to": "VGI",
+      "km": 7,
+      "lines": [
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "BVI",
+      "to": "DIC",
+      "km": 2.4,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "BVI",
+      "to": "KILE",
+      "km": 2.4,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "BVS",
+      "to": "KJT",
+      "km": 9.5,
+      "lines": [
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "BVS",
+      "to": "NRL",
+      "km": 6.5,
+      "lines": [
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "BY",
+      "to": "CHG",
+      "km": 1.2,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "BY",
+      "to": "SNRD",
+      "km": 1.7,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "BYR",
+      "to": "MIRD",
+      "km": 3.2,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "BYR",
+      "to": "NIG",
+      "km": 4.3,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "CCG",
+      "to": "MEL",
+      "km": 1.4,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "CHG",
+      "to": "CY",
+      "km": 0.9,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "CLA",
+      "to": "CLF",
+      "km": 2.7,
+      "lines": [
+        "harbour_panvel"
+      ]
+    },
+    {
+      "from": "CLA",
+      "to": "SIN",
+      "km": 3.1,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "CLA",
+      "to": "TNX",
+      "km": 1.5,
+      "lines": [
+        "harbour_panvel"
+      ]
+    },
+    {
+      "from": "CLA",
+      "to": "VVH",
+      "km": 1.6,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "CLF",
+      "to": "GTBN",
+      "km": 1.9,
+      "lines": [
+        "harbour_panvel"
+      ]
+    },
+    {
+      "from": "CMBR",
+      "to": "GVN",
+      "km": 1.6,
+      "lines": [
+        "harbour_panvel"
+      ]
+    },
+    {
+      "from": "CMBR",
+      "to": "TNX",
+      "km": 1.5,
+      "lines": [
+        "harbour_panvel"
+      ]
+    },
+    {
+      "from": "CSMT",
+      "to": "MSD",
+      "km": 1.4,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli",
+        "harbour_panvel",
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "CTGN",
+      "to": "RRD",
+      "km": 1.3,
+      "lines": [
+        "harbour_panvel",
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "CTGN",
+      "to": "SVE",
+      "km": 1.7,
+      "lines": [
+        "harbour_panvel",
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "CY",
+      "to": "PR",
+      "km": 1,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "CYR",
+      "to": "GTR",
+      "km": 1,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "CYR",
+      "to": "MEL",
+      "km": 1.1,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "DDR",
+      "to": "MRU",
+      "km": 1.6,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "DDR",
+      "to": "PBHY",
+      "km": 0.8,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "DI",
+      "to": "KOPR",
+      "km": 2.3,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "DI",
+      "to": "TKZ",
+      "km": 2.3,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "DIC",
+      "to": "MIRD",
+      "km": 4.8,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "DIVA",
+      "to": "DTV",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "DIVA",
+      "to": "KOPR",
+      "km": 2.4,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli",
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "DIVA",
+      "to": "MBQ",
+      "km": 3.8,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "DKRD",
+      "to": "RRD",
+      "km": 1.4,
+      "lines": [
+        "harbour_panvel",
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "DKRD",
+      "to": "SNRD",
+      "km": 2.3,
+      "lines": [
+        "harbour_panvel",
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "DLV",
+      "to": "KELE",
+      "km": 3,
+      "lines": [
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "DLV",
+      "to": "LWJ",
+      "km": 2.6,
+      "lines": [
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "DR",
+      "to": "MTN",
+      "km": 1.9,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "DR",
+      "to": "PR",
+      "km": 1.9,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "DRD",
+      "to": "VGN",
+      "km": 15.4,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "DRGI",
+      "to": "NSCT",
+      "km": 3,
+      "lines": [
+        "nerul_uran"
+      ]
+    },
+    {
+      "from": "DRGI",
+      "to": "URAN",
+      "km": 2,
+      "lines": [
+        "nerul_uran"
+      ]
+    },
+    {
+      "from": "DTV",
+      "to": "NIJ",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "GAVN",
+      "to": "KHOP",
+      "km": 4,
+      "lines": [
+        "nerul_uran"
+      ]
+    },
+    {
+      "from": "GAVN",
+      "to": "RJPD",
+      "km": 3,
+      "lines": [
+        "nerul_uran"
+      ]
+    },
+    {
+      "from": "GC",
+      "to": "VK",
+      "km": 2.4,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "GC",
+      "to": "VVH",
+      "km": 1.5,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "GMN",
+      "to": "MDD",
+      "km": 2.6,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "GMN",
+      "to": "RMAR",
+      "km": 1.5,
+      "lines": [
+        "western",
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "GNSL",
+      "to": "KOKN",
+      "km": 3.5,
+      "lines": [
+        "trans_harbour_vashi",
+        "trans_harbour_nerul"
+      ]
+    },
+    {
+      "from": "GNSL",
+      "to": "RABL",
+      "km": 3,
+      "lines": [
+        "trans_harbour_vashi",
+        "trans_harbour_nerul"
+      ]
+    },
+    {
+      "from": "GTBN",
+      "to": "VDLR",
+      "km": 1.8,
+      "lines": [
+        "harbour_panvel"
+      ]
+    },
+    {
+      "from": "GVN",
+      "to": "MNKD",
+      "km": 1.7,
+      "lines": [
+        "harbour_panvel"
+      ]
+    },
+    {
+      "from": "HMP",
+      "to": "JITE",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "HMP",
+      "to": "PEN",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "JMP",
+      "to": "NRL",
+      "km": 7.5,
+      "lines": [
+        "neral_matheran"
+      ]
+    },
+    {
+      "from": "JMP",
+      "to": "WTP",
+      "km": 4.5,
+      "lines": [
+        "neral_matheran"
+      ]
+    },
+    {
+      "from": "JNJ",
+      "to": "NEU",
+      "km": 2.2,
+      "lines": [
+        "harbour_panvel",
+        "trans_harbour_nerul"
+      ]
+    },
+    {
+      "from": "JNJ",
+      "to": "SNPD",
+      "km": 2,
+      "lines": [
+        "harbour_panvel"
+      ]
+    },
+    {
+      "from": "JNJ",
+      "to": "TUBH",
+      "km": 3,
+      "lines": [
+        "trans_harbour_nerul"
+      ]
+    },
+    {
+      "from": "JOS",
+      "to": "RMAR",
+      "km": 1.6,
+      "lines": [
+        "western",
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "JUC",
+      "to": "KAMN",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "KAD",
+      "to": "THS",
+      "km": 5.2,
+      "lines": [
+        "central_main_kasara"
+      ]
+    },
+    {
+      "from": "KAD",
+      "to": "UBR",
+      "km": 7.6,
+      "lines": [
+        "central_main_kasara"
+      ]
+    },
+    {
+      "from": "KAMN",
+      "to": "KRBW",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "KASU",
+      "to": "NGTN",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "KASU",
+      "to": "PEN",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "KCE",
+      "to": "MM",
+      "km": 2,
+      "lines": [
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "KCE",
+      "to": "VDLR",
+      "km": 1.8,
+      "lines": [
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "KDV",
+      "to": "TLA",
+      "km": 6.2,
+      "lines": [
+        "central_main_kasara"
+      ]
+    },
+    {
+      "from": "KDV",
+      "to": "VSD",
+      "km": 6.3,
+      "lines": [
+        "central_main_kasara"
+      ]
+    },
+    {
+      "from": "KELE",
+      "to": "PDI",
+      "km": 3.5,
+      "lines": [
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "KELV",
+      "to": "PLG",
+      "km": 7.1,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "KELV",
+      "to": "SAH",
+      "km": 7.6,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "KHAG",
+      "to": "MSRV",
+      "km": 2.1,
+      "lines": [
+        "harbour_panvel"
+      ]
+    },
+    {
+      "from": "KHAR",
+      "to": "STC",
+      "km": 1.4,
+      "lines": [
+        "western",
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "KILE",
+      "to": "MDD",
+      "km": 2.5,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "KJRD",
+      "to": "VK",
+      "km": 1.9,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "KJT",
+      "to": "PDI",
+      "km": 2.5,
+      "lines": [
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "KLMG",
+      "to": "NWRD",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "KLMG",
+      "to": "PNVL",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "KNDS",
+      "to": "MSRV",
+      "km": 2.4,
+      "lines": [
+        "harbour_panvel"
+      ]
+    },
+    {
+      "from": "KNDS",
+      "to": "PNVL",
+      "km": 3.4,
+      "lines": [
+        "harbour_panvel"
+      ]
+    },
+    {
+      "from": "KOKN",
+      "to": "TUBH",
+      "km": 3.5,
+      "lines": [
+        "trans_harbour_vashi",
+        "trans_harbour_nerul"
+      ]
+    },
+    {
+      "from": "KP",
+      "to": "LWJ",
+      "km": 2.4,
+      "lines": [
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "KVA",
+      "to": "MBQ",
+      "km": 4.3,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "KVA",
+      "to": "TNA",
+      "km": 2.8,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "KYN",
+      "to": "SHAD",
+      "km": 3.1,
+      "lines": [
+        "central_main_kasara"
+      ]
+    },
+    {
+      "from": "KYN",
+      "to": "TKZ",
+      "km": 2.3,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "KYN",
+      "to": "VLDI",
+      "km": 2.3,
+      "lines": [
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "MLND",
+      "to": "NHU",
+      "km": 1.7,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "MLND",
+      "to": "TNA",
+      "km": 5.4,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "MM",
+      "to": "MRU",
+      "km": 1.3,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "MNKD",
+      "to": "VSH",
+      "km": 5.3,
+      "lines": [
+        "harbour_panvel"
+      ]
+    },
+    {
+      "from": "MSD",
+      "to": "SNRD",
+      "km": 0.9,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli",
+        "harbour_panvel",
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "MTN",
+      "to": "SIN",
+      "km": 1.8,
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "MX",
+      "to": "PL",
+      "km": 1.2,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "N",
+      "to": "UBR",
+      "km": 12.5,
+      "lines": [
+        "central_main_kasara"
+      ]
+    },
+    {
+      "from": "NEU",
+      "to": "SWDV",
+      "km": 2.1,
+      "lines": [
+        "harbour_panvel",
+        "nerul_uran"
+      ]
+    },
+    {
+      "from": "NGTN",
+      "to": "ROHA",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "NIJ",
+      "to": "TLPD",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "NRL",
+      "to": "SHLU",
+      "km": 4.3,
+      "lines": [
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "NSCT",
+      "to": "RJPD",
+      "km": 5,
+      "lines": [
+        "nerul_uran"
+      ]
+    },
+    {
+      "from": "NSP",
+      "to": "VR",
+      "km": 3.8,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "NWRD",
+      "to": "TLPD",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "PBHY",
+      "to": "PL",
+      "km": 1.3,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "PLG",
+      "to": "UMR",
+      "km": 6,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "PNVL",
+      "to": "SMNE",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "RSNI",
+      "to": "SMNE",
+      "km": null,
+      "lines": [
+        "vasai_roha"
+      ]
+    },
+    {
+      "from": "SAH",
+      "to": "VTN",
+      "km": 7.6,
+      "lines": [
+        "western"
+      ]
+    },
+    {
+      "from": "SHLU",
+      "to": "VGI",
+      "km": 4.6,
+      "lines": [
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "SNPD",
+      "to": "TUBH",
+      "km": 3,
+      "lines": [
+        "trans_harbour_vashi"
+      ]
+    },
+    {
+      "from": "SNPD",
+      "to": "VSH",
+      "km": 2.4,
+      "lines": [
+        "harbour_panvel",
+        "trans_harbour_vashi"
+      ]
+    },
+    {
+      "from": "STC",
+      "to": "VLP",
+      "km": 1.7,
+      "lines": [
+        "western",
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "SVE",
+      "to": "VDLR",
+      "km": 2.2,
+      "lines": [
+        "harbour_panvel",
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "from": "SWDV",
+      "to": "TARG",
+      "km": 2.9,
+      "lines": [
+        "nerul_uran"
+      ]
+    },
+    {
+      "from": "ULNR",
+      "to": "VLDI",
+      "km": 2,
+      "lines": [
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "from": "VR",
+      "to": "VTN",
+      "km": 4.9,
+      "lines": [
+        "western"
+      ]
+    }
+  ],
+  "interchanges": [
+    {
+      "place": "Dadar",
+      "codes": {
+        "western": "DDR",
+        "central": "DR"
+      },
+      "lines": [
+        "western",
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "place": "Kurla",
+      "codes": {
+        "all": "CLA"
+      },
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli",
+        "harbour_panvel"
+      ]
+    },
+    {
+      "place": "Mahim Junction",
+      "codes": {
+        "all": "MM"
+      },
+      "lines": [
+        "western",
+        "harbour_goregaon"
+      ]
+    },
+    {
+      "place": "Vadala Road",
+      "codes": {
+        "all": "VDLR"
+      },
+      "lines": [
+        "harbour_panvel",
+        "harbour_goregaon",
+        "monorail_line_1"
+      ]
+    },
+    {
+      "place": "Ghatkopar",
+      "codes": {
+        "central": "GC"
+      },
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli",
+        "metro_line_1"
+      ]
+    },
+    {
+      "place": "Andheri",
+      "codes": {
+        "all": "ADH"
+      },
+      "lines": [
+        "western",
+        "harbour_goregaon",
+        "metro_line_1"
+      ]
+    },
+    {
+      "place": "Thane",
+      "codes": {
+        "all": "TNA"
+      },
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli",
+        "trans_harbour_vashi",
+        "trans_harbour_nerul"
+      ]
+    },
+    {
+      "place": "Vashi",
+      "codes": {
+        "all": "VSH"
+      },
+      "lines": [
+        "harbour_panvel",
+        "trans_harbour_vashi"
+      ]
+    },
+    {
+      "place": "Nerul",
+      "codes": {
+        "all": "NEU"
+      },
+      "lines": [
+        "harbour_panvel",
+        "trans_harbour_nerul",
+        "nerul_uran"
+      ]
+    },
+    {
+      "place": "Panvel",
+      "codes": {
+        "all": "PNVL"
+      },
+      "lines": [
+        "harbour_panvel",
+        "vasai_roha"
+      ]
+    },
+    {
+      "place": "Diva Junction",
+      "codes": {
+        "all": "DIVA"
+      },
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli",
+        "vasai_roha"
+      ]
+    },
+    {
+      "place": "Vasai Road",
+      "codes": {
+        "all": "BSR"
+      },
+      "lines": [
+        "western",
+        "vasai_roha"
+      ]
+    },
+    {
+      "place": "Neral Junction",
+      "codes": {
+        "all": "NRL"
+      },
+      "lines": [
+        "central_main_khopoli",
+        "neral_matheran"
+      ]
+    },
+    {
+      "place": "Chembur",
+      "codes": {
+        "harbour": "CMBR"
+      },
+      "lines": [
+        "harbour_panvel",
+        "monorail_line_1"
+      ]
+    },
+    {
+      "place": "Kalyan Junction",
+      "codes": {
+        "all": "KYN"
+      },
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli"
+      ]
+    },
+    {
+      "place": "Sandhurst Road",
+      "codes": {
+        "all": "SNRD"
+      },
+      "lines": [
+        "central_main_kasara",
+        "central_main_khopoli",
+        "harbour_panvel",
+        "harbour_goregaon"
+      ]
+    }
+  ],
+  "fare_rules": {
+    "principle": "Fare is a function of the chargeable distance slab, class and ticket type — NOT of the number of stops or interchanges.",
+    "chargeable_distance": "Shortest permitted route distance between origin and destination, rounded up into the slab.",
+    "rounding": "Suburban second class uses its own rounding rule; other classes round up to the nearest ₹5.",
+    "slabs": [
+      {
+        "from_km": 1,
+        "to_km": 5,
+        "single_second": 5,
+        "single_first": 25,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 35,
+        "verified_from": "mumbailifeline.com fare calculator, Mumbai CSMT–Dockyard Road (HR), 2.99 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 6,
+        "to_km": 10,
+        "single_second": 5,
+        "single_first": 25,
+        "mst_second": null,
+        "mst_first": null,
+        "verified_from": "RailOne journey ticket, Airoli-Thane, 6 km, SECOND|ORDINARY|RETURN Rs.10.00 => single Rs.5, 2026-08-14 | additionally cross-checked against mumbailifeline.com fare calculator, Khadavli–Vasind (CR), 8 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket",
+        "cross_check": "mumbailifeline.com fare calculator independently reports the same single_second=5 for a similar-distance pair (Khadavli–Vasind, 8km, fetched 2026-08-23).",
+        "single_ac_unverified_for_future_use": 35
+      },
+      {
+        "from_km": 11,
+        "to_km": 15,
+        "single_second": 10,
+        "single_first": 40,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 50,
+        "verified_from": "mumbailifeline.com fare calculator, Kopar–Ambernath (CR), 12.97 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 16,
+        "to_km": 20,
+        "single_second": 10,
+        "single_first": 60,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 70,
+        "verified_from": "mumbailifeline.com fare calculator, Dighe–Nerul (TH), 18 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 21,
+        "to_km": 25,
+        "single_second": 10,
+        "single_first": 60,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 70,
+        "verified_from": "mumbailifeline.com fare calculator, GTB Nagar–Nerul (HR), 22.99 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 26,
+        "to_km": 30,
+        "single_second": 10,
+        "single_first": 85,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 95,
+        "verified_from": "mumbailifeline.com fare calculator, Matunga Road–Mira Road (WR), 28.01 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 31,
+        "to_km": 35,
+        "single_second": 15,
+        "single_first": 85,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 95,
+        "verified_from": "mumbailifeline.com fare calculator, Currey Road–Mumbra (CR), 33.01 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 36,
+        "to_km": 40,
+        "single_second": 15,
+        "single_first": 90,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 100,
+        "verified_from": "mumbailifeline.com fare calculator, Dadar–Kopar (CR), 38.01 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 41,
+        "to_km": 45,
+        "single_second": 15,
+        "single_first": 90,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 100,
+        "verified_from": "mumbailifeline.com fare calculator, Titwala–Khardi (CR), 42.98 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 46,
+        "to_km": 50,
+        "single_second": 15,
+        "single_first": 95,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 105,
+        "verified_from": "mumbailifeline.com fare calculator, Kopar–Atgaon (CR), 48.01 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 51,
+        "to_km": 55,
+        "single_second": 15,
+        "single_first": 100,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 105,
+        "verified_from": "mumbailifeline.com fare calculator, Dombivli–Thansit (CR), 52.94 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 56,
+        "to_km": 60,
+        "single_second": 20,
+        "single_first": 100,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 115,
+        "verified_from": "mumbailifeline.com fare calculator, Mumbai CST–Ambivli (CR), 57.98 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 61,
+        "to_km": 65,
+        "single_second": 20,
+        "single_first": 105,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 115,
+        "verified_from": "mumbailifeline.com fare calculator, Nalla Sopara–Gholvad (WR), 63.03 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 66,
+        "to_km": 70,
+        "single_second": 20,
+        "single_first": 105,
+        "mst_second": 315,
+        "mst_first": null,
+        "verified_from": "RailOne season ticket, Badlapur–CSMT, 68 km, MONTHLY|ORDINARY|SECOND, 2026-08-09 | additionally cross-checked against mumbailifeline.com fare calculator, Thane–Thansit (CR), 67.98 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket",
+        "single_ac_unverified_for_future_use": 120
+      },
+      {
+        "from_km": 71,
+        "to_km": 75,
+        "single_second": 20,
+        "single_first": 115,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 125,
+        "verified_from": "mumbailifeline.com fare calculator, Jogeshwari–Umroli (WR), 72.98 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 76,
+        "to_km": 80,
+        "single_second": 25,
+        "single_first": 125,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 140,
+        "verified_from": "mumbailifeline.com fare calculator, Kanjur Marg–Palasdhari (CR), 78 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 81,
+        "to_km": 85,
+        "single_second": 25,
+        "single_first": 125,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 140,
+        "verified_from": "mumbailifeline.com fare calculator, Vile Parle–Boisar (WR), 83.02 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 86,
+        "to_km": 90,
+        "single_second": 25,
+        "single_first": 125,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 140,
+        "verified_from": "mumbailifeline.com fare calculator, Bandra–Boisar (WR), 88.03 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 91,
+        "to_km": 95,
+        "single_second": 30,
+        "single_first": 135,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 145,
+        "verified_from": "mumbailifeline.com fare calculator, Kurla–Dolavli (CR), 93.04 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 96,
+        "to_km": 100,
+        "single_second": 30,
+        "single_first": 135,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 145,
+        "verified_from": "mumbailifeline.com fare calculator, Sandhurst Road–Karjat (CR), 97.92 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 101,
+        "to_km": 110,
+        "single_second": 30,
+        "single_first": 145,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 160,
+        "verified_from": "mumbailifeline.com fare calculator, Currey Road–Lowjee (CR), 105.51 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 111,
+        "to_km": 120,
+        "single_second": 35,
+        "single_first": 150,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 165,
+        "verified_from": "mumbailifeline.com fare calculator, Grant Road–Gholvad (WR), 115.29 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 121,
+        "to_km": 130,
+        "single_second": 35,
+        "single_first": 150,
+        "mst_second": null,
+        "mst_first": null,
+        "single_ac_unverified_for_future_use": 165,
+        "verified_from": "mumbailifeline.com fare calculator, Churchgate–Dahanu Road (WR), 123.78 km, fetched 2026-08-23 — site labels fares as approximate (\"~\"), not an official WR/CR table or a purchased ticket"
+      },
+      {
+        "from_km": 131,
+        "to_km": 140,
+        "single_second": null,
+        "single_first": null,
+        "mst_second": null,
+        "mst_first": null
+      },
+      {
+        "from_km": 141,
+        "to_km": 150,
+        "single_second": null,
+        "single_first": null,
+        "mst_second": null,
+        "mst_first": null
+      },
+      {
+        "from_km": 151,
+        "to_km": 160,
+        "single_second": null,
+        "single_first": null,
+        "mst_second": null,
+        "mst_first": null
+      },
+      {
+        "from_km": 161,
+        "to_km": 170,
+        "single_second": null,
+        "single_first": null,
+        "mst_second": null,
+        "mst_first": null
+      },
+      {
+        "from_km": 171,
+        "to_km": 180,
+        "single_second": null,
+        "single_first": null,
+        "mst_second": null,
+        "mst_first": null
+      },
+      {
+        "from_km": 181,
+        "to_km": 190,
+        "single_second": null,
+        "single_first": null,
+        "mst_second": null,
+        "mst_first": null
+      },
+      {
+        "from_km": 191,
+        "to_km": 200,
+        "single_second": null,
+        "single_first": null,
+        "mst_second": null,
+        "mst_first": null
+      }
+    ],
+    "slab_note": "single_second and single_first are now populated for most of the network (1–130 km) from mumbailifeline.com's fare calculator API, cross-checked against the one photographed RailOne ticket we hold (6–10km, matches exactly). That site itself labels its numbers as approximate, so treat these as good-quality estimates, not official confirmed fares — replace with a real WR/CR published table if one turns up. mst_second/mst_first (season passes) are NOT covered by that site (it only calculates single-journey fares) and remain mostly null, aside from the one verified real season ticket. Bands beyond ~124 km have no real same-line station pair on any line to source from (no line reaches that far) and are left null rather than extrapolated.",
+    "ticket_types": {
+      "single": {
+        "multiplier_of_single": 1,
+        "validity": "Same day. Journey must commence within the permitted window of issue."
+      },
+      "return": {
+        "multiplier_of_single": 2,
+        "note": "No discount on suburban return; it is simply twice the single fare.",
+        "validity": "Until 23:59 of the day AFTER the booking date.",
+        "validity_rule": "booked_on.date + 1 day, 23:59:59",
+        "verified_from": "Booked 2026-08-14 09:52, valid till 2026-08-15 23:59",
+        "ticket_text": "Valid for one ret. jrny. till midnight of {valid_till_date}"
+      },
+      "season_monthly": {
+        "code": "MST",
+        "derivation": "Historically 15 × second-class single fare, but ship the published MST table rather than computing it.",
+        "validity_rule": "valid_from + 1 month − 1 day",
+        "example": "valid_from 2026-08-10 → valid_till 2026-09-09"
+      },
+      "season_quarterly": {
+        "code": "QST",
+        "multiplier_of_mst": 2.7,
+        "validity_rule": "valid_from + 3 months − 1 day"
+      },
+      "season_half_yearly": {
+        "code": "HST",
+        "multiplier_of_mst": 5.4,
+        "validity_rule": "valid_from + 6 months − 1 day",
+        "confidence": "unverified"
+      },
+      "season_yearly": {
+        "code": "YST",
+        "multiplier_of_mst": 10.8,
+        "validity_rule": "valid_from + 12 months − 1 day",
+        "confidence": "unverified"
+      }
+    },
+    "classes": [
+      "SECOND",
+      "FIRST",
+      "AC"
+    ],
+    "minimum_fares": {
+      "SECOND": 5,
+      "FIRST": 25,
+      "AC_EMU": 35
+    },
+    "concessions": {
+      "child_under_5": "Free.",
+      "child_5_to_12": "Half adult fare, subject to the class minimum.",
+      "senior_student_handicapped": "Separate concession season tickets exist — model as a discount code, verify percentages."
+    },
+    "surcharges": {
+      "cidco": {
+        "applies_to": "Navi Mumbai stations flagged cidco_surcharge=true",
+        "note": "Levied on top of the base fare; amount varies — source it, do not guess."
+      }
+    },
+    "unverified_warning": "Season-pass (mst_second/mst_first) figures are still almost entirely unsourced beyond the one verified 66–70km MST anchor — do not ship those without a real source. Single-journey figures are now sourced from a third-party calculator (see slab_note) rather than fabricated, but that site's own disclaimer calls them approximate — verify against an official table before treating them as exact.",
+    "train_types": [
+      "ORDINARY",
+      "AC"
+    ],
+    "ticket_categories": {
+      "journey": "Single or return, printed as 'Journey Ticket'.",
+      "season": "Passes, printed as 'Season Ticket'."
+    },
+    "passengers": {
+      "adults": "1..N, each charged the full slab fare.",
+      "children": "Age 5-12, charged half the adult fare subject to the class minimum. Under 5 travel free and are not counted.",
+      "total_formula": "total = adults * fare + children * max(fare/2, class_minimum)",
+      "display": "Ticket prints as '{adults} Adult, {children} Child'."
+    },
+    "display_rules": {
+      "via_when_direct": "Print '------' when the journey needs no routing points.",
+      "fare_format": "Two decimal places, e.g. Rs.10.00.",
+      "class_line": "{CLASS} | {TRAIN_TYPE} | {TICKET_TYPE} | Rs.{fare}"
+    }
+  }
+}
