@@ -7,7 +7,7 @@
   "id": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#dfe1e8",
+  "background_color": "#0056f8",
   "theme_color": "#0056f8",
   "icons": [
     { "src": "image/logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
