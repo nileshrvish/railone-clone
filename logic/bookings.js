@@ -9,6 +9,7 @@
  * it was.
  */
 import { renderTicket } from './ticket-render.js';
+import { getRail } from './rail-provider.js';
 import { TICKET_TYPE_LABELS, formatCardDate, validTillISO } from './fare.js';
 import * as store from './bookings-store.js';
 import { loadProfileSafe } from './profile-store.js';
@@ -67,6 +68,21 @@ function fromRecord(record) {
   };
 }
 
+/**
+ * Tickets saved before quotes carried routeCount still deserve the Via prefix.
+ * The count depends only on the network, so it can be looked up on reopen
+ * rather than migrated into every stored record.
+ */
+async function withRouteCount(quote) {
+  if (Number.isFinite(quote?.routeCount)) return quote;
+  try {
+    const rail = await getRail();
+    return { ...quote, routeCount: rail.routeCount(quote.from.code, quote.to.code) };
+  } catch {
+    return quote; // no count is better than a wrong one
+  }
+}
+
 function buildCard(ticket, validTill) {
   const typeLabel = TICKET_TYPE_LABELS[ticket.ticketType] ?? ticket.ticketType.toUpperCase();
 
@@ -107,7 +123,7 @@ function buildCard(ticket, validTill) {
 
   card.querySelector('.view-details').addEventListener('click', async () => {
     const passenger = await loadProfileSafe(); // always the current profile, not whatever it was at booking time
-    renderTicket({ ...ticket, passenger });
+    renderTicket({ ...ticket, quote: await withRouteCount(ticket.quote), passenger });
     window.RailOneApp.showView('ticket');
   });
 

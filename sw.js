@@ -17,7 +17,7 @@
  * in IndexedDB (logic/db.js), is never fetched over HTTP, and so survives
  * every cache change and every app update untouched.
  */
-const CACHE_VERSION = 'v8';
+const CACHE_VERSION = 'v11';
 const PRECACHE = `railone-precache-${CACHE_VERSION}`;
 const RUNTIME = `railone-runtime-${CACHE_VERSION}`;
 const RUNTIME_MAX_ENTRIES = 60;
