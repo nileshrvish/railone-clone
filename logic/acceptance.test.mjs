@@ -57,9 +57,13 @@ test('5. MumbaiRail.addMonths clamps month-end overflow', () => {
 test('6. PNVL -> CCG: CIDCO surcharge + named interchanges', () => {
   const q = rail.quote('PNVL', 'CCG');
   assert.equal(q.cidcoSurcharge, true);
-  const names = q.interchanges.map((i) => i.name);
-  assert.ok(names.includes('Vadala Road'));
-  assert.ok(names.includes('Mahim Junction'));
+  // Assert on codes: display names track the UTS station list and can be
+  // re-spelled (Mahim Junction -> Mahim Jn.), but the interchange itself is
+  // what this test is about.
+  const codes = q.interchanges.map((i) => i.at);
+  assert.ok(codes.includes('VDLR'));
+  assert.ok(codes.includes('MM'));
+  assert.ok(q.interchanges.every((i) => i.name));
 });
 
 test('7. Unpriced slab -> fareAvailable is false and no number is shown', () => {

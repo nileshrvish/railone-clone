@@ -1,34 +1,63 @@
 /**
- * bookings-store.js — persists booked tickets to data/bookings.json.
- * Connection (folder picker, IndexedDB handle cache) lives in data-dir.js,
- * shared with profile-store.js so the user is only asked once.
+ * bookings-store.js — booked tickets, kept on the device in IndexedDB
+ * (see db.js) under the 'bookings' store, keyed by the ticket serial.
+ *
+ * Records are the same shape that used to be written to data/bookings.json,
+ * so nothing downstream had to change: serial, ticketType, cls, trainType,
+ * adults, children, total, bookedAt (ISO), validTill (ISO date), quote.
+ * Passenger identity is deliberately never stored on a ticket — it is read
+ * live from the profile every time a ticket is rendered.
  */
-import { files } from './data-dir.js';
+import { STORES, getAll, put, del, clear } from './db.js';
+import { ready, emitChange, persistOnEngagement } from './store.js';
 
-export { isSupported, isConnected, tryConnectSilently, connect } from './data-dir.js';
-
-const FILE_NAME = 'bookings.json';
-
-async function readAll() {
-  const parsed = await files.readJSON(FILE_NAME, { bookings: [] });
-  return Array.isArray(parsed.bookings) ? parsed.bookings : [];
+/** Newest first, matching the order the UI renders and prepends in. */
+function newestFirst(records) {
+  return records.sort((a, b) => String(b.bookedAt).localeCompare(String(a.bookedAt)));
 }
 
-/** Appends one record (newest-first) and writes the whole file back. */
+function isExpired(record, nowMs) {
+  const till = new Date(record.validTill + 'T23:59:59').getTime();
+  return Number.isFinite(till) && till < nowMs;
+}
+
+export async function listBookings() {
+  await ready();
+  return newestFirst(await getAll(STORES.BOOKINGS));
+}
+
+/** Adds (or replaces, by serial) one booking. */
 export async function saveBooking(record) {
-  const bookings = await readAll();
-  bookings.unshift(record);
-  await files.writeJSON(FILE_NAME, { bookings });
+  await ready();
+  await put(STORES.BOOKINGS, record);
+  emitChange('bookings');
+  persistOnEngagement(); // a booked ticket is worth asking to keep for good
+}
+
+export async function deleteBooking(serial) {
+  await ready();
+  await del(STORES.BOOKINGS, serial);
+  emitChange('bookings');
 }
 
 /**
- * Reads the file, drops any record whose validTill has passed, rewrites the
- * file only if something was actually removed, and returns what's left
- * (newest-first, same order as stored).
+ * Drops every record whose validity has passed and returns what's left,
+ * newest first. Writes only when something actually expired.
  */
 export async function pruneExpired(nowMs = Date.now()) {
-  const bookings = await readAll();
-  const kept = bookings.filter((b) => new Date(b.validTill + 'T23:59:59').getTime() >= nowMs);
-  if (kept.length !== bookings.length) await files.writeJSON(FILE_NAME, { bookings: kept });
-  return kept;
+  await ready();
+  const all = await getAll(STORES.BOOKINGS);
+  const expired = all.filter((record) => isExpired(record, nowMs));
+
+  if (expired.length) {
+    await Promise.all(expired.map((record) => del(STORES.BOOKINGS, record.serial)));
+    emitChange('bookings');
+  }
+  return newestFirst(all.filter((record) => !isExpired(record, nowMs)));
+}
+
+export async function clearBookings() {
+  await ready();
+  await clear(STORES.BOOKINGS);
+  emitChange('bookings');
 }

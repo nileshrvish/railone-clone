@@ -1,16 +1,38 @@
 {
-  "name": "RailOne",
+  "name": "RailOne — Mumbai Suburban Rail",
   "short_name": "RailOne",
-  "description": "Unreserved ticket booking, journey planner and digital tickets for Mumbai's suburban rail.",
+  "description": "Unreserved ticket booking, journey planner and digital tickets for Mumbai's suburban rail. Works offline — your tickets and profile stay on your device.",
+  "lang": "en-IN",
+  "dir": "ltr",
   "start_url": "./index.html",
   "scope": "./",
   "id": "./index.html",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
   "background_color": "#0056f8",
   "theme_color": "#0056f8",
+  "categories": ["travel", "navigation", "utilities"],
+  "prefer_related_applications": false,
   "icons": [
-    { "src": "image/logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "image/logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+    { "src": "image/logo.png", "sizes": "560x560", "type": "image/png", "purpose": "any" },
+    { "src": "image/maskable-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" },
+    { "src": "image/maskable-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Book an unreserved ticket",
+      "short_name": "Book ticket",
+      "description": "Plan a journey and book an unreserved ticket",
+      "url": "./index.html#/search",
+      "icons": [{ "src": "image/logo.png", "sizes": "560x560", "type": "image/png" }]
+    },
+    {
+      "name": "My bookings",
+      "short_name": "Bookings",
+      "description": "Show the tickets saved on this device",
+      "url": "./index.html#/bookings",
+      "icons": [{ "src": "image/logo.png", "sizes": "560x560", "type": "image/png" }]
+    }
   ]
 }

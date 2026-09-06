@@ -24,17 +24,29 @@ function paint(upTo) {
 
 function setRating(value) {
   rating = value;
+  // A radio group: exactly one option is checked, and only it is tabbable, so
+  // Tab moves past the whole group and arrows move within it.
   els.starBtns.forEach((btn) => {
-    btn.setAttribute('aria-pressed', String(Number(btn.dataset.value) <= value));
+    const isValue = Number(btn.dataset.value) === value;
+    btn.setAttribute('aria-checked', String(isValue));
+    btn.tabIndex = isValue ? 0 : -1;
   });
   paint(value);
   els.submit.disabled = rating === 0;
 }
 
-els.starBtns.forEach((btn) => {
+els.starBtns.forEach((btn, index) => {
   const value = Number(btn.dataset.value);
   btn.addEventListener('click', () => setRating(value));
   btn.addEventListener('mouseenter', () => paint(value));
+  btn.addEventListener('keydown', (event) => {
+    const step = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 }[event.key];
+    if (!step) return;
+    event.preventDefault();
+    const next = els.starBtns[(index + step + els.starBtns.length) % els.starBtns.length];
+    setRating(Number(next.dataset.value));
+    next.focus();
+  });
 });
 els.stars.addEventListener('mouseleave', () => paint(rating));
 
@@ -49,4 +61,5 @@ els.submit.addEventListener('click', () => {
   els.submit.disabled = true;
   els.desc.disabled = true;
   els.starBtns.forEach((btn) => { btn.disabled = true; });
+  els.stars.setAttribute('aria-disabled', 'true');
 });
