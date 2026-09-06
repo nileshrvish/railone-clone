@@ -34,6 +34,19 @@
     if (meta) meta.content = dark ? '#101828' : '#0056f8';
   } catch (err) { /* storage blocked - the light default stands */ }
 
+  // App lock: decided here, synchronously, so a ticket is never painted behind
+  // the overlay. logic/app-lock.js clears the attribute once the device has
+  // verified the rider.
+  try {
+    if (JSON.parse(localStorage.getItem('railone.pref.appLock') || 'false') === true
+        && window.PublicKeyCredential) {
+      document.documentElement.dataset.locked = 'true';
+      // Failsafe: if that module never runs (load failure), don't strand
+      // anyone behind a lock screen that nothing is listening to.
+      setTimeout(function () { delete document.documentElement.dataset.locked; }, 12000);
+    }
+  } catch (err) { /* storage blocked - stay unlocked */ }
+
   setTimeout(function () {
     var splash = document.getElementById('splash');
     if (splash) splash.remove();
@@ -51,6 +64,7 @@
 <link rel="modulepreload" href="logic/search-form.js">
 <link rel="modulepreload" href="logic/profile-form.js">
 <link rel="modulepreload" href="logic/app-chrome.js">
+<link rel="modulepreload" href="logic/app-lock.js">
 <link rel="modulepreload" href="logic/rail-provider.js">
 <link rel="modulepreload" href="mumbai-rail.js">
 <link rel="modulepreload" href="logic/store.js">
@@ -102,6 +116,13 @@
   <p class="splash-name">RailOne</p>
   <div class="splash-bar" aria-hidden="true"><span></span></div>
   <p class="splash-tagline">Mumbai Suburban Rail<br>Tickets stay on your device</p>
+</div>
+
+<div class="app-lock" id="app-lock" role="dialog" aria-modal="true" aria-labelledby="app-lock-title">
+  <img class="app-lock-logo" src="image/logo.png" alt="" width="72" height="72" decoding="async">
+  <h2 class="app-lock-title" id="app-lock-title">RailOne is locked</h2>
+  <p class="app-lock-text" id="app-lock-text">Verify it&rsquo;s you to continue.</p>
+  <button class="app-lock-btn" id="app-lock-unlock" type="button">Unlock</button>
 </div>
 
 <div class="app" id="app">
@@ -452,6 +473,18 @@
       </form>
 
       <section class="settings" aria-label="App settings">
+        <div id="security-settings" hidden>
+          <h2 class="settings-title">Security</h2>
+          <div class="switch-row">
+            <span class="switch-label" id="app-lock-label">Unlock with biometrics</span>
+            <button class="switch" id="app-lock-toggle" type="button" role="switch"
+                    aria-checked="false" aria-labelledby="app-lock-label">
+              <span class="switch-knob"></span>
+            </button>
+          </div>
+          <p class="settings-note" id="app-lock-note">Ask for your fingerprint, face or device PIN each time RailOne opens.</p>
+        </div>
+
         <h2 class="settings-title">Appearance</h2>
         <div class="segmented" id="theme-switch" role="radiogroup" aria-label="Theme">
           <button class="segmented-item" type="button" role="radio" data-theme-choice="light" aria-checked="false" tabindex="-1">Light</button>

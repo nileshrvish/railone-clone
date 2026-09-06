@@ -11,6 +11,7 @@ import './theme.js';
 import { initConnectivity } from './connectivity.js';
 import { initInstall } from './install.js';
 import { initWakeLock } from './wake-lock.js';
+import { initAppLock } from './app-lock.js';
 import { ready, storageStatus } from './store.js';
 
 const statusEl = document.getElementById('storage-status');
@@ -53,6 +54,7 @@ async function renderStorageStatus() {
 initConnectivity();
 initInstall();
 initWakeLock();
+initAppLock();
 
 // Keep the number honest whenever the rider opens the screen it lives on.
 window.addEventListener('railone:viewchange', (event) => {

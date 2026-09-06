@@ -17,7 +17,7 @@
  * in IndexedDB (logic/db.js), is never fetched over HTTP, and so survives
  * every cache change and every app update untouched.
  */
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v5';
 const PRECACHE = `railone-precache-${CACHE_VERSION}`;
 const RUNTIME = `railone-runtime-${CACHE_VERSION}`;
 const RUNTIME_MAX_ENTRIES = 60;
@@ -32,6 +32,7 @@ const CORE_URLS = [
   './manifest.json',
   './data/mumbai_suburban_rail.json',
   './logic/app-chrome.js',
+  './logic/app-lock.js',
   './logic/autocomplete.js',
   './logic/badge.js',
   './logic/bookings.js',
