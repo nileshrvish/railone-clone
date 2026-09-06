@@ -182,27 +182,8 @@ function showFormError(msg) {
 // Season passes must carry the rider's identity (see ticket-render.js) — the
 // real RailOne season ticket this was modeled on prints Name/Age/ID Type/ID
 // Number, and won't exist without a profile. Journey tickets (single/return)
-// don't need one; if a profile happens to already be connected, its
-// name/mobile are used to personalize the ticket header, but it's never
-// required and never forces a folder-picker prompt on its own.
-async function getProfileForBooking(isSeason) {
-  if (!profileStore.isSupported()) return { profile: null, blocked: isSeason ? 'UNSUPPORTED' : null };
-
-  if (!profileStore.isConnected()) {
-    if (!isSeason) return { profile: null, blocked: null };
-    try {
-      await profileStore.connect(); // the submit click is a real gesture, so this may show the picker
-    } catch (err) {
-      return { profile: null, blocked: err?.name === 'AbortError' ? 'CANCELLED' : 'CONNECT_FAILED' };
-    }
-  }
-
-  try {
-    return { profile: await profileStore.loadProfile(), blocked: null };
-  } catch {
-    return { profile: null, blocked: isSeason ? 'LOAD_FAILED' : null };
-  }
-}
+// don't need one; if a profile is saved on the device its name/mobile are used
+// to personalize the ticket header, but it is never required.
 
 els.form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -219,26 +200,12 @@ els.form.addEventListener('submit', async (e) => {
   const isSeason = ticketType.startsWith('season');
 
   els.submit.disabled = true;
-  const { profile, blocked } = await getProfileForBooking(isSeason);
+  const profile = await profileStore.loadProfileSafe();
   els.submit.disabled = false;
 
-  if (isSeason) {
-    if (blocked === 'UNSUPPORTED') {
-      showFormError('Season passes need a saved profile, and this browser doesn’t support the storage RailOne uses (try Chrome or Edge).');
-      return;
-    }
-    if (blocked === 'CANCELLED') {
-      showFormError('Folder access was cancelled, so your profile couldn’t be checked.');
-      return;
-    }
-    if (blocked === 'CONNECT_FAILED' || blocked === 'LOAD_FAILED') {
-      showFormError('Could not read your profile. Please try again.');
-      return;
-    }
-    if (!profileStore.isProfileComplete(profile)) {
-      showFormError('Season passes need a complete profile — go to "You" and fill in your name, mobile, age and ID.');
-      return;
-    }
+  if (isSeason && !profileStore.isProfileComplete(profile)) {
+    showFormError('Season passes need a complete profile — go to "You" and fill in your name, mobile, age and ID.');
+    return;
   }
 
   const { adults, children, total } = currentTotal(q);

@@ -9,12 +9,58 @@
     ticket: document.getElementById('view-ticket')
   };
 
-  function showView(name) {
+  // Hash routes, not paths: this is a static site with no server rewrites, so
+  // a pushed path would 404 on refresh. Hashes also let the manifest's app
+  // shortcuts deep-link straight into a view.
+  var ROUTES = {
+    home: '#/home',
+    bookings: '#/bookings',
+    search: '#/search',
+    profile: '#/profile',
+    ticket: '#/ticket'
+  };
+
+  var currentView = 'home';
+  var booted = false;
+
+  function routeFromHash() {
+    var hash = String(window.location.hash || '');
+    for (var key in ROUTES) {
+      if (ROUTES[key] === hash) return key;
+    }
+    return null;
+  }
+
+  /** Moves focus to the new view so screen readers and keyboards follow along. */
+  function focusView(section) {
+    var target = section.querySelector('.header-title, .greeting') || section;
+    target.setAttribute('tabindex', '-1');
+    if (booted) target.focus({ preventScroll: true });
+  }
+
+  function showView(name, options) {
+    if (!views[name]) return;
+    var opts = options || {};
+    currentView = name;
+
     Object.keys(views).forEach(function (key) {
-      views[key].classList.toggle('active', key === name);
+      var active = key === name;
+      views[key].classList.toggle('active', active);
+      views[key].setAttribute('aria-hidden', String(!active));
     });
+
     var scrollEl = views[name].querySelector('.scroll');
     if (scrollEl) scrollEl.scrollTop = 0;
+
+    if (opts.push !== false && window.location.hash !== ROUTES[name]) {
+      history.pushState({ view: name }, '', ROUTES[name]);
+    }
+
+    focusView(views[name]);
+
+    // Other modules (wake lock, analytics-free housekeeping) listen for this
+    // instead of reaching into the shell.
+    window.dispatchEvent(new CustomEvent('railone:viewchange', { detail: { view: name } }));
 
     if (name === 'ticket') {
       startCountdown();
@@ -22,6 +68,18 @@
       stopCountdown();
     }
   }
+
+  // Hardware/browser Back moves between views instead of leaving the app.
+  window.addEventListener('popstate', function (event) {
+    var name = (event.state && event.state.view) || routeFromHash() || 'home';
+    showView(name, { push: false });
+  });
+
+  // A shortcut opened while the app is already running only changes the hash.
+  window.addEventListener('hashchange', function () {
+    var name = routeFromHash();
+    if (name && name !== currentView) showView(name, { push: false });
+  });
 
   // ---- Home bottom nav ----
   document.querySelectorAll('.nav-item').forEach(function (btn) {
@@ -31,6 +89,8 @@
         showView('bookings');
       } else if (target === 'you') {
         showView('profile');
+      } else if (target === 'home') {
+        showView('home');
       }
       // "menu" is intentionally not implemented per scope.
     });
@@ -71,8 +131,12 @@
 
   tabButtons.forEach(function (btn) {
     btn.addEventListener('click', function () {
-      tabButtons.forEach(function (b) { b.classList.remove('active'); });
+      tabButtons.forEach(function (b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
       btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
       var tab = btn.getAttribute('data-tab-switch');
       var hasData = tab === 'upcoming';
       bookingsList.hidden = !hasData;
@@ -247,7 +311,43 @@
 
   drawQr();
 
-  // Minimal hook for logic/search-form.js (an ES module, loaded separately)
-  // to navigate to the digital ticket view once it has rendered real data.
-  window.RailOneApp = { showView: showView };
+  // ================= Startup screen =================
+  // The splash is painted by index.html before any script runs. It goes away
+  // when the app modules report ready, with a short floor so it never flashes,
+  // and a backstop in case a module never gets there.
+  var splash = document.getElementById('splash');
+  var splashShownAt = Date.now();
+  var splashDismissed = false;
+
+  function dismissSplash() {
+    if (splashDismissed) return;
+    splashDismissed = true;
+    if (!splash) return;
+    setTimeout(function () {
+      splash.classList.add('is-hidden');
+      setTimeout(function () {
+        if (splash && splash.parentNode) splash.parentNode.removeChild(splash);
+        splash = null;
+      }, 420);
+    }, Math.max(0, 400 - (Date.now() - splashShownAt)));
+  }
+
+  window.addEventListener('load', function () { setTimeout(dismissSplash, 1500); });
+
+  // ================= Boot =================
+  var initial = routeFromHash() || 'home';
+  // Nothing has been rendered into the ticket view yet on a cold start.
+  if (initial === 'ticket') initial = 'bookings';
+  showView(initial, { push: false });
+  // Seed the first history entry without dirtying the URL, so the first Back
+  // press has somewhere to return to.
+  history.replaceState({ view: initial }, '');
+  booted = true;
+
+  // The hook logic/*.js modules use to drive the shell.
+  window.RailOneApp = {
+    showView: showView,
+    currentView: function () { return currentView; },
+    appReady: dismissSplash
+  };
 })();

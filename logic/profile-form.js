@@ -1,15 +1,15 @@
 /**
- * profile-form.js — the "You" tab: create/edit the rider's profile, stored
- * via profile-store.js (File System Access — data/profile.json), same
- * connection and no-localStorage rule as bookings. Module entry point
- * loaded directly by index.html.
+ * profile-form.js — the "You" tab: create, edit and delete the rider's
+ * profile, stored on the device via profile-store.js (IndexedDB). Loads
+ * whatever is already saved as soon as the app opens — no prompt, no connect
+ * step. Module entry point loaded directly by index.html.
  */
 import * as store from './profile-store.js';
+import { onChange } from './store.js';
 import { ID_TYPES } from './fare.js';
 import { updateGreeting } from './greeting.js';
 
 const els = {
-  connectBtn: document.getElementById('profile-connect'),
   form: document.getElementById('profile-form'),
   name: document.getElementById('profile-name'),
   mobile: document.getElementById('profile-mobile'),
@@ -19,10 +19,15 @@ const els = {
   formError: document.getElementById('profile-form-error'),
   formNote: document.getElementById('profile-form-note'),
   submit: document.getElementById('profile-submit'),
+  deleteBtn: document.getElementById('profile-delete'),
 };
 
 function fillForm(profile) {
-  if (!profile) return;
+  if (!profile) {
+    els.form.reset();
+    els.idType.value = ID_TYPES[0];
+    return;
+  }
   els.name.value = profile.name ?? '';
   els.mobile.value = profile.mobile ?? '';
   els.age.value = profile.age ?? '';
@@ -35,8 +40,10 @@ async function loadAndFill() {
     const profile = await store.loadProfile();
     fillForm(profile);
     updateGreeting(profile);
+    if (els.deleteBtn) els.deleteBtn.hidden = !profile;
   } catch (err) {
-    console.warn('RailOne: could not read data/profile.json —', err);
+    console.warn('RailOne: could not read the saved profile —', err);
+    showError('Could not read your saved profile on this device.');
   }
 }
 
@@ -81,44 +88,39 @@ els.form.addEventListener('submit', async (e) => {
 
   els.submit.disabled = true;
   try {
-    if (store.isSupported()) {
-      if (!store.isConnected()) await store.connect(); // click is a real gesture — may show the folder picker
-      await store.saveProfile(result.profile);
-      els.connectBtn.hidden = true;
-      updateGreeting(result.profile);
-      showNote('Profile saved to data/profile.json.');
-    } else {
-      updateGreeting(result.profile);
-      showNote('Profile saved for this session (this browser doesn’t support saving it to a file).');
-    }
+    await store.saveProfile(result.profile);
+    updateGreeting(result.profile);
+    if (els.deleteBtn) els.deleteBtn.hidden = false;
+    showNote('Profile saved on this device.');
   } catch (err) {
-    if (err?.name === 'AbortError') {
-      showError('Folder access was cancelled, so the profile wasn’t saved.');
-    } else {
-      console.warn('RailOne: could not save data/profile.json —', err);
-      showError('Could not save the profile. See the console for details.');
-    }
+    console.warn('RailOne: could not save the profile —', err);
+    showError(err?.code === 'QUOTA_EXCEEDED'
+      ? 'There is no room left on this device to save the profile.'
+      : 'Could not save the profile on this device. See the console for details.');
   } finally {
     els.submit.disabled = false;
   }
 });
 
-if (store.isSupported()) {
-  store.tryConnectSilently().then((connected) => {
-    if (connected) loadAndFill();
-    else els.connectBtn.hidden = false;
-  });
+els.deleteBtn?.addEventListener('click', async () => {
+  if (!window.confirm('Delete the profile saved on this device? Your booked tickets are kept.')) return;
+  els.deleteBtn.disabled = true;
+  try {
+    await store.deleteProfile();
+    fillForm(null);
+    els.deleteBtn.hidden = true;
+    showNote('Profile deleted from this device.');
+  } catch (err) {
+    console.warn('RailOne: could not delete the profile —', err);
+    showError('Could not delete the profile. See the console for details.');
+  } finally {
+    els.deleteBtn.disabled = false;
+  }
+});
 
-  els.connectBtn.addEventListener('click', async () => {
-    els.connectBtn.disabled = true;
-    try {
-      await store.connect();
-      await loadAndFill();
-      els.connectBtn.hidden = true;
-    } catch (err) {
-      if (err?.name !== 'AbortError') console.warn('RailOne: could not connect profile storage —', err);
-    } finally {
-      els.connectBtn.disabled = false;
-    }
-  });
-}
+// Another tab edited or deleted the profile: show what's actually stored.
+onChange((message) => {
+  if (message.kind === 'profile') loadAndFill();
+});
+
+loadAndFill();

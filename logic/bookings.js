@@ -1,20 +1,23 @@
 /**
  * bookings.js — the My Bookings "Upcoming" list: renders ticket-cards using
  * the existing markup/classes exactly (no new styling), restores previously
- * saved tickets from data/bookings.json on load, persists new ones there,
- * and removes cards live once their validity has passed.
+ * saved tickets from local storage on load, persists new ones there, and
+ * removes cards live once their validity has passed.
  *
  * The pre-existing static mock card (BHAYANDAR — GHANSOLI) is never touched;
- * it isn't part of the store and stays exactly as it was.
+ * it isn't part of the store (it carries no data-serial) and stays exactly as
+ * it was.
  */
 import { renderTicket } from './ticket-render.js';
 import { TICKET_TYPE_LABELS, formatCardDate, validTillISO } from './fare.js';
 import * as store from './bookings-store.js';
 import { loadProfileSafe } from './profile-store.js';
+import { onChange } from './store.js';
+import { setTicketBadge } from './badge.js';
+import { showToast } from './toast.js';
 
 const bookingsList = document.getElementById('bookings-list');
 const bookingsCount = document.getElementById('bookings-count');
-const connectBtn = document.getElementById('bookings-connect');
 
 const EXPIRY_CHECK_MS = 60 * 1000;
 
@@ -23,10 +26,13 @@ function maskedUts(serial) {
 }
 
 function updateUpcomingCount() {
+  const total = bookingsList.querySelectorAll('.ticket-card').length;
   const activeTab = document.querySelector('.tab-item.active');
   if (activeTab && activeTab.getAttribute('data-tab-switch') === 'upcoming') {
-    bookingsCount.textContent = `Upcoming (${bookingsList.querySelectorAll('.ticket-card').length})`;
+    bookingsCount.textContent = `Upcoming (${total})`;
   }
+  // Installed app icon carries the live ticket count.
+  setTicketBadge(bookingsList.querySelectorAll('.ticket-card[data-serial]').length);
 }
 
 function toRecord(ticket) {
@@ -117,29 +123,36 @@ export function addBooking(ticket) {
 }
 
 async function persistNewBooking(ticket) {
-  if (!store.isSupported()) return; // Firefox/Safari: session-only, no file to write to
   try {
-    if (!store.isConnected()) await store.connect(); // may show the folder picker — must run inside the booking click's gesture
     await store.saveBooking(toRecord(ticket));
-    if (connectBtn) connectBtn.hidden = true;
   } catch (err) {
-    if (err?.name !== 'AbortError') console.warn('RailOne: could not save ticket to data/bookings.json —', err);
+    // The card is already on screen and the ticket is already valid; only
+    // durability is lost. Say so rather than failing the booking, because the
+    // rider needs to know this ticket won't be here after a restart.
+    const reason = err?.code === 'QUOTA_EXCEEDED' ? 'device storage is full' : 'local storage failed';
+    console.warn(`RailOne: this ticket could not be saved for next time (${reason}) —`, err);
+    showToast(err?.code === 'QUOTA_EXCEEDED'
+      ? 'Ticket issued, but there is no room left on this device to save it.'
+      : 'Ticket issued, but it could not be saved on this device.', { duration: 7000 });
   }
 }
 
-/** Reads data/bookings.json, drops expired records, renders what's left. */
-async function restoreFromStore() {
+/** Reads local storage, drops expired records, renders what's left. */
+async function renderFromStore() {
   let kept;
   try {
     kept = await store.pruneExpired();
   } catch (err) {
-    console.warn('RailOne: could not read data/bookings.json —', err);
+    console.warn('RailOne: could not read saved tickets —', err);
     return;
   }
+
+  // Cards we own carry data-serial; the static sample card doesn't and stays.
+  bookingsList.querySelectorAll('.ticket-card[data-serial]').forEach((card) => card.remove());
+
   const frag = document.createDocumentFragment(); // kept[0] is newest; append in order so it lands on top
   for (const record of kept) {
-    const ticket = fromRecord(record);
-    frag.appendChild(buildCard(ticket, record.validTill));
+    frag.appendChild(buildCard(fromRecord(record), record.validTill));
   }
   bookingsList.prepend(frag);
   updateUpcomingCount();
@@ -156,29 +169,20 @@ function startExpiryWatch() {
     if (!expiredCards.length) return;
     expiredCards.forEach((card) => card.remove());
     updateUpcomingCount();
-    try { await store.pruneExpired(now); } catch { /* DOM is already correct; file will catch up next successful write */ }
+    try { await store.pruneExpired(now); } catch { /* DOM is already correct; storage catches up on the next prune */ }
   }, EXPIRY_CHECK_MS);
 }
 
-if (store.isSupported()) {
-  store.tryConnectSilently().then((connected) => {
-    if (connected) {
-      restoreFromStore();
-    } else if (connectBtn) {
-      connectBtn.hidden = false;
-    }
-  });
+// Another tab booked, deleted or expired something: re-read and re-render, so
+// every open window agrees on what's stored.
+onChange((message) => {
+  if (message.kind === 'bookings') renderFromStore();
+});
 
-  connectBtn?.addEventListener('click', async () => {
-    connectBtn.disabled = true;
-    try {
-      await store.connect();
-      await restoreFromStore();
-      connectBtn.hidden = true;
-    } catch (err) {
-      if (err?.name !== 'AbortError') console.warn('RailOne: could not connect ticket storage —', err);
-    } finally {
-      connectBtn.disabled = false;
-    }
-  });
-}
+// Coming back to a backgrounded PWA can be hours later: re-check expiry then,
+// rather than trusting a timer that the browser may have throttled or frozen.
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') renderFromStore();
+});
+
+renderFromStore();

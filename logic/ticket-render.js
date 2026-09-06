@@ -21,6 +21,29 @@ import {
 } from './fare.js';
 import { isProfileComplete } from './profile-store.js';
 
+const TICKET_COLORS = ['#93c680', '#03b2cc', '#7969d4'];
+
+/**
+ * The ticket's accent colour: one per ticket, derived from its serial rather
+ * than drawn fresh at render time. Serials are random (see randomSerial in
+ * fare.js), so tickets spread across the palette, but the same ticket keeps
+ * its colour every time it is reopened instead of changing on each visit.
+ *
+ * Applied as a single custom property on the ticket root, so the top and
+ * bottom strips, the countdown progress bar and the perforation line are the
+ * same colour by construction — there is no second draw to disagree with.
+ */
+function accentFor(serial) {
+  const key = String(serial ?? '');
+  if (!key) return TICKET_COLORS[Math.floor(Math.random() * TICKET_COLORS.length)];
+
+  let hash = 0;
+  for (let i = 0; i < key.length; i += 1) {
+    hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+  }
+  return TICKET_COLORS[hash % TICKET_COLORS.length];
+}
+
 /**
  * `serial` is generated once, at booking time (see search-form.js), and
  * passed in here rather than generated fresh on every render — the same
@@ -33,6 +56,9 @@ import { isProfileComplete } from './profile-store.js';
 export function renderTicket({ quote, ticketType, cls, trainType, adults, children, total, bookedAt, serial, passenger }) {
   const $ = (id) => document.getElementById(id);
   const isSeason = ticketType.startsWith('season');
+
+  const ticketEl = document.querySelector('.digital-ticket');
+  if (ticketEl) ticketEl.style.setProperty('--ticket-accent', accentFor(serial));
 
   $('dt-heading').textContent = ticketCategoryLabel(ticketType);
   $('dt-serial').textContent = serial;
