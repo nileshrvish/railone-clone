@@ -431,6 +431,8 @@ button:disabled{cursor:default;}
   overflow:hidden;
   margin-bottom:20px;
 }
+.no-margin {margin: 0 !important;}
+.dt-value#dt-p-name {max-width: 190px;}
 .dt-strip{height:14px;}
 .dt-progress {background:#b8b4b4;}
 .dt-in-progress {display: block;width: 0; transition:all .3s ease;}

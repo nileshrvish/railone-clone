@@ -384,7 +384,7 @@
           </div>
         </div>
 
-        <div class="search-row">
+        <div class="search-row" id="search-passenger-row">
           <div class="search-field">
             <label class="search-label" for="search-adults">Adults</label>
             <input class="search-input" id="search-adults" type="number" min="1" max="6" value="1">
@@ -400,7 +400,25 @@
           <input class="search-input" id="search-booked-at" type="datetime-local">
         </div>
 
+        <div class="search-field">
+          <label class="search-label" for="search-fare-override" id="search-fare-override-label">Fare per adult &#8377; (optional)</label>
+          <input class="search-input" id="search-fare-override" type="number" min="0" step="0.5"
+                 inputmode="decimal" autocomplete="off" placeholder="Leave blank to use the fare table">
+        </div>
+
         <div class="search-preview" id="search-preview" hidden>
+          <div class="search-preview-row" id="preview-pass-row" hidden>
+            <span class="search-preview-label">Pass</span>
+            <span class="search-preview-value" id="preview-pass">&mdash;</span>
+          </div>
+          <div class="search-preview-row" id="preview-route-row" hidden>
+            <span class="search-preview-label">Route</span>
+            <span class="search-preview-value" id="preview-route">&mdash;</span>
+          </div>
+          <div class="search-preview-row" id="preview-class-row" hidden>
+            <span class="search-preview-label">Class</span>
+            <span class="search-preview-value" id="preview-class">&mdash;</span>
+          </div>
           <div class="search-preview-row">
             <span class="search-preview-label">Distance</span>
             <span class="search-preview-value" id="preview-km">&mdash;</span>
@@ -408,6 +426,18 @@
           <div class="search-preview-row">
             <span class="search-preview-label">Via</span>
             <span class="search-preview-value" id="preview-via">&mdash;</span>
+          </div>
+          <div class="search-preview-row" id="preview-validfrom-row" hidden>
+            <span class="search-preview-label">Valid from</span>
+            <span class="search-preview-value" id="preview-valid-from">&mdash;</span>
+          </div>
+          <div class="search-preview-row" id="preview-validtill-row" hidden>
+            <span class="search-preview-label">Valid till</span>
+            <span class="search-preview-value" id="preview-valid-till">&mdash;</span>
+          </div>
+          <div class="search-preview-row" id="preview-holder-row" hidden>
+            <span class="search-preview-label">Pass holder</span>
+            <span class="search-preview-value" id="preview-holder">&mdash;</span>
           </div>
           <div class="search-preview-row">
             <span class="search-preview-label">Fare</span>
@@ -578,6 +608,12 @@
             <p class="dt-fare" id="dt-fare-line">SECOND | ORDINARY | RETURN | &#8377;10.00</p>
             <p class="dt-ir" id="dt-ir-line">IR:27AAAGM0289C2ZI</p>
 
+            <div class="dt-perf">
+              <span class="dt-perf-notch left"></span>
+              <span class="dt-perf-line"></span>
+              <span class="dt-perf-notch right"></span>
+            </div>
+
             <div class="dt-identity" id="dt-identity" hidden>
               <div class="dt-row two-col">
                 <div>
@@ -589,7 +625,7 @@
                   <span class="dt-value" id="dt-p-age">&nbsp;</span>
                 </div>
               </div>
-              <div class="dt-row two-col">
+              <div class="dt-row two-col no-margin">
                 <div>
                   <span class="dt-label">ID Type</span>
                   <span class="dt-value" id="dt-p-idtype">&nbsp;</span>
@@ -599,12 +635,6 @@
                   <span class="dt-value" id="dt-p-idnumber">&nbsp;</span>
                 </div>
               </div>
-            </div>
-
-            <div class="dt-perf">
-              <span class="dt-perf-notch left"></span>
-              <span class="dt-perf-line"></span>
-              <span class="dt-perf-notch right"></span>
             </div>
             <p class="dt-valid-note" id="dt-valid-note">Valid for one ret. jrny. till midnight of 15/08/2026</p>
           </div>

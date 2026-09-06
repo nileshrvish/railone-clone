@@ -15,6 +15,29 @@ export const TICKET_TYPE_LABELS = {
   season_yearly: 'YEARLY',
 };
 
+/**
+ * How long each pass runs, straight from fare_rules.ticket_types[*].
+ * validity_rule ("valid_from + N months - 1 day"). Used for the summary line;
+ * the end date itself is always computed by MumbaiRail.validity(), never here.
+ */
+export const PASS_DURATION_MONTHS = {
+  season_monthly: 1,
+  season_quarterly: 3,
+  season_half_yearly: 6,
+  season_yearly: 12,
+};
+
+export function isSeasonType(ticketType) {
+  return typeof ticketType === 'string' && ticketType.startsWith('season');
+}
+
+/** '1 month' / '3 months' — for the booking summary. */
+export function passDurationLabel(ticketType) {
+  const months = PASS_DURATION_MONTHS[ticketType];
+  if (!months) return null;
+  return months === 1 ? '1 month' : `${months} months`;
+}
+
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const SERIAL_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
@@ -45,6 +68,72 @@ export function classMinimum(fareRules, cls) {
 export function computeTotal(fareInr, adults, children, classMin) {
   if (fareInr == null) return null;
   return adults * fareInr + children * Math.max(fareInr / 2, classMin);
+}
+
+/**
+ * The payable total for any ticket type.
+ *
+ * Journey tickets are per head, so they multiply out over adults and children
+ * (fare_rules.passengers.total_formula). A season pass is not: it is issued to
+ * one named holder — the profile whose Name/Age/ID is printed on it — so the
+ * pass fare *is* the total, and passenger counts must not multiply it.
+ */
+export function computeTicketTotal({ ticketType, fareInr, adults, children, classMin }) {
+  if (isSeasonType(ticketType)) return fareInr;
+  return computeTotal(fareInr, adults, children, classMin);
+}
+
+/**
+ * Reads the optional "enter the fare yourself" box.
+ *
+ * Returns { fare, error }: fare null and error null when the box is empty
+ * (the table's own figure is then used, exactly as before), a message when
+ * what was typed can't be a fare.
+ */
+export function parseManualFare(raw) {
+  const text = String(raw ?? '').trim();
+  if (!text) return { fare: null, error: null };
+
+  const value = Number(text);
+  if (!Number.isFinite(value)) return { fare: null, error: 'Enter the fare as a number, or leave it blank to use the fare table.' };
+  if (value <= 0) return { fare: null, error: 'A fare has to be more than \u20b90.' };
+  if (value > 100000) return { fare: null, error: 'That fare looks wrong \u2014 enter an amount under \u20b91,00,000.' };
+
+  return { fare: Math.round(value * 100) / 100, error: null };
+}
+
+/**
+ * Substitutes a manually entered fare for the table's figure.
+ *
+ * The override replaces the *per-ticket* fare, so everything downstream keeps
+ * its existing meaning: a journey ticket still multiplies it over adults and
+ * children, a pass still uses it as-is for its one holder. fareBasis records
+ * that a human typed it, so a stored ticket never looks like a sourced fare
+ * when it isn't one.
+ */
+export function withManualFare(quote, fareInr) {
+  // A no-route result has no fare to override; leave the error untouched.
+  if (quote == null || quote.error || fareInr == null) return quote;
+  return {
+    ...quote,
+    fareInr,
+    fareAvailable: true,
+    fareBasis: 'manually entered fare',
+    manualFare: true,
+  };
+}
+
+/**
+ * The distance bands the shipped fare table can actually price a pass for, in
+ * the given class. Derived from the data rather than written down, so adding
+ * sourced mst_* rows to data/mumbai_suburban_rail.json widens what the app
+ * can sell with no code change.
+ */
+export function pricedPassBands(fareRules, cls) {
+  const key = `mst_${String(cls).toLowerCase()}`;
+  return fareRules.slabs
+    .filter((slab) => slab[key] != null)
+    .map((slab) => `${slab.from_km}\u2013${slab.to_km} km`);
 }
 
 /** '------' when the route needs no routing points (direct journey). */
