@@ -431,9 +431,9 @@ button:disabled{cursor:default;}
   overflow:hidden;
   margin-bottom:20px;
 }
-.dt-strip{height:16px;}
-.dt-progress {height:6px; background:#b8b4b4;}
-.dt-in-progress {display: block;width: 0; height:6px; transition:all .3s ease;}
+.dt-strip{height:14px;}
+.dt-progress {background:#b8b4b4;}
+.dt-in-progress {display: block;width: 0; transition:all .3s ease;}
 .dt-dark{
   background:#000;
   background-image: url("image/diamond.png");
@@ -531,7 +531,7 @@ button:disabled{cursor:default;}
 .dt-identity[hidden]{display:none;}
 
 .dt-perf{position:relative; display:flex; align-items:center; margin:0 -20px 4px;}
-.dt-perf-line{flex:1; border-top:1px dotted var(--border); margin:0;}
+.dt-perf-line{flex:1; border-top:1px dashed var(--border); margin:0;}
 .dt-perf-notch{width:33px; height:33px; border-radius:50%; background:var(--surface-alt);}
 .dt-perf-notch.left{margin-left:-6px;}
 .dt-perf-notch.right{margin-right:-6px;}
@@ -842,3 +842,56 @@ body{overscroll-behavior:none;}
     border-radius:28px;
   }
 }
+
+
+/* ---- app lock (biometric unlock) ---- */
+.app-lock{
+  position:fixed; inset:0; z-index:1000;
+  display:none;
+  flex-direction:column; align-items:center; justify-content:center; gap:14px;
+  padding:calc(24px + env(safe-area-inset-top)) 28px calc(24px + env(safe-area-inset-bottom));
+  background:var(--surface);
+  text-align:center;
+}
+:root[data-locked="true"] .app-lock{display:flex;}
+.app-lock-logo{width:72px; height:72px; border-radius:20px; box-shadow:0 10px 26px var(--shadow-color);}
+.app-lock-title{font-size:19px; font-weight:700; color:var(--navy);}
+.app-lock-text{font-size:13.5px; font-weight:500; color:var(--gray); max-width:280px; line-height:1.5;}
+.app-lock-btn{
+  margin-top:6px;
+  min-width:170px;
+  padding:13px 22px;
+  border-radius:30px;
+  background:var(--blue);
+  color:#fff;
+  font-size:15px; font-weight:600;
+}
+.app-lock-btn:disabled{opacity:.6; cursor:default;}
+
+/* ---- settings switch ---- */
+.switch-row{
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  background:var(--card-bg);
+  border-radius:14px;
+  padding:12px 14px;
+}
+.switch-label{font-size:13.5px; font-weight:600; color:var(--navy);}
+.switch{
+  flex-shrink:0;
+  width:46px; height:27px;
+  border-radius:99px;
+  background:var(--gray-light);
+  padding:3px;
+  display:flex; align-items:center;
+  transition:background .18s ease;
+}
+.switch[aria-checked="true"]{background:var(--blue);}
+.switch-knob{
+  width:21px; height:21px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.3);
+  transition:transform .18s ease;
+}
+.switch[aria-checked="true"] .switch-knob{transform:translateX(19px);}
+.switch:disabled{opacity:.6; cursor:default;}
