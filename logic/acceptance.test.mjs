@@ -35,6 +35,7 @@ test('2. AWL -> TNA, return, SECOND', () => {
   assert.equal(q.fareAvailable, true);
   assert.equal(q.fareInr, 10); // 2 x Rs.5 single
   assert.equal(viaDisplay(q.via), '------'); // direct, no routing points
+  assert.equal(viaDisplay(q.via, q.routeCount), '------'); // direct: no routing points to qualify
 
   // Valid till 23:59 the following day.
   const bookedDate = new Date(2026, 7, 14, 9, 52); // 14 Aug 2026, local
@@ -231,4 +232,52 @@ test('12. a manually entered fare overrides the table, and says that it did', ()
   assert.equal(withManualFare(unpriced, null), unpriced);
   const noRoute = { error: 'NO_ROUTE' };
   assert.equal(withManualFare(noRoute, 500), noRoute);
+});
+
+test('13. Via carries the number of genuinely distinct routes, then the route', () => {
+  // The real Badlapur-CSMT ticket names one route; the one-station wobbles
+  // Yen's algorithm turns up are the same corridor, not alternatives.
+  const bud = rail.quote('BUD', 'CSMT');
+  assert.equal(bud.routeCount, 1);
+  assert.equal(viaDisplay(bud.via, bud.routeCount), '1RT>>KYN-TNA-CLA-DR-SNRD');
+
+  // Thane to Vashi really is two: Trans-Harbour, or round through Kurla.
+  const options = rail.routeOptions('TNA', 'VSH');
+  assert.equal(options.length, 2);
+  assert.ok(options[0].km < options[1].km, 'shortest route first');
+  const tnaVsh = rail.quote('TNA', 'VSH');
+  assert.equal(tnaVsh.routeCount, 2);
+  assert.match(viaDisplay(tnaVsh.via, tnaVsh.routeCount), /^2RT>>/);
+
+  // The route shown is always the one the fare was quoted on.
+  assert.equal(tnaVsh.chargeableKm, options[0].km);
+  assert.equal(tnaVsh.via, options[0].corridor);
+
+  // Codes, never names.
+  for (const code of tnaVsh.via.split('-')) {
+    assert.ok(rail.stations.has(code), `${code} should be a station code`);
+  }
+
+  // A count is never invented: no count in, no prefix out (old saved tickets).
+  assert.equal(viaDisplay('KYN-TNA', undefined), 'KYN-TNA');
+  assert.equal(viaDisplay('', 3), '------');   // nothing to prefix
+  assert.equal(viaDisplay(null, 2), '------');
+  assert.equal(viaDisplay('TUBH-SNPD', 2), '2RT>>TUBH-SNPD');
+
+  // Every pair reports at least one route, and never more than it can justify.
+  for (const [a, b] of [['AWL', 'TNA'], ['PNVL', 'CCG'], ['CSMT', 'PNVL'], ['KYN', 'CCG']]) {
+    const count = rail.routeCount(a, b);
+    assert.ok(count >= 1 && count <= 8, `${a}->${b} reported ${count} routes`);
+    assert.equal(count, rail.routeOptions(a, b).length);
+  }
+});
+
+test('14. counting routes does not disturb the fare path', () => {
+  // route() with no bans must still be the same shortest path it always was.
+  const withOpts = rail.route('BUD', 'CSMT', {});
+  const plain = rail.route('BUD', 'CSMT');
+  assert.equal(plain.km, withOpts.km);
+  assert.deepEqual(plain.path.map(p => p.code), withOpts.path.map(p => p.code));
+  assert.equal(rail.quote('BUD', 'CSMT', { ticketType: 'season_monthly', cls: 'SECOND' }).fareInr, 315);
+  assert.equal(rail.quote('AWL', 'TNA', { ticketType: 'single', cls: 'SECOND' }).fareInr, 5);
 });

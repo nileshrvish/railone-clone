@@ -21,6 +21,19 @@
  * would need a key derived from the authenticator (the WebAuthn PRF
  * extension), which is not yet available widely enough to rely on.
  *
+ * On the system sheet's appearance: the dialog that appears is drawn entirely
+ * by the browser and the OS, and a web page cannot set its icon, title or
+ * wording. It names the origin ("<domain> needs to verify that it's you")
+ * because that binding is the whole anti-phishing guarantee of WebAuthn — a
+ * site that could relabel the prompt with someone else's name and logo is
+ * exactly the attack the design prevents. A native Android app shows its own
+ * icon there because it calls BiometricPrompt with its package identity; the
+ * web has no equivalent, and faking one in HTML would be both a lie and a
+ * downgrade (a real sheet cannot be screenshotted or scripted by the page).
+ * What the page *can* do is send correct identity — rp.name and the user
+ * entity below — for the surfaces that do render it, such as the passkey
+ * manager's own list.
+ *
  * The gate itself is armed pre-paint by the inline script in index.html
  * (data-locked on <html>), so no ticket is ever painted behind the overlay.
  */
@@ -30,6 +43,7 @@ import { getPref, setPref, removePref } from './prefs.js';
 import { loadProfileSafe } from './profile-store.js';
 import { showToast } from './toast.js';
 
+const APP_NAME = 'RailOne';  // identity sent to credential managers that display one
 const RECORD_KEY = 'appLock';  // IndexedDB (meta): the credential this device registered
 const PREF_KEY = 'appLock';    // localStorage: read synchronously before first paint
 
@@ -40,7 +54,15 @@ const els = {
   overlay: document.getElementById('app-lock'),
   overlayText: document.getElementById('app-lock-text'),
   unlockBtn: document.getElementById('app-lock-unlock'),
+  resetBtn: document.getElementById('app-lock-reset'),
 };
+
+// A device whose screen lock is removed or changed discards its platform
+// credentials, and every attempt then fails identically to a cancel. Offer a
+// way out rather than sealing someone away from their own tickets — this is a
+// convenience lock, and the data behind it was never encrypted by it.
+const FAILURES_BEFORE_RECOVERY = 2;
+let failedAttempts = 0;
 
 // ------------------------------------------------------------- primitives
 
@@ -84,8 +106,15 @@ async function enable() {
   const credential = await navigator.credentials.create({
     publicKey: {
       challenge: randomBytes(32),
-      rp: { name: 'RailOne' },               // no id: defaults to this origin
-      user: { id: randomBytes(16), name: label, displayName: label },
+      // rp.id is deliberately omitted so it defaults to whatever origin the app
+      // is actually served from — nothing about the host is written down here.
+      // rp.name is the app identity credential managers display in their lists.
+      rp: { name: APP_NAME },
+      user: {
+        id: randomBytes(16),
+        name: label,
+        displayName: `${label} · ${APP_NAME}`,
+      },
       pubKeyCredParams: [
         { type: 'public-key', alg: -7 },     // ES256
         { type: 'public-key', alg: -257 },   // RS256
@@ -93,8 +122,12 @@ async function enable() {
       authenticatorSelection: {
         authenticatorAttachment: 'platform', // the device itself, not a security key
         userVerification: 'required',        // biometric or device PIN, not just presence
-        residentKey: 'discouraged',
+        residentKey: 'discouraged',          // stays on this device; never synced elsewhere
       },
+      // WebAuthn L3: send the browser straight to this device's own sensor
+      // instead of offering a phone/security-key chooser first. Browsers that
+      // predate it ignore the member.
+      hints: ['client-device'],
       attestation: 'none',                   // we are not verifying the device's identity
       timeout: 60000,
     },
@@ -189,12 +222,12 @@ async function verify() {
   const assertion = await navigator.credentials.get({
     publicKey: {
       challenge: randomBytes(32),
-      allowCredentials: [{
-        type: 'public-key',
-        id: fromBase64Url(record.credentialId),
-        transports: ['internal'],
-      }],
-      userVerification: 'required',
+      // No `transports` hint: this credential is device-bound, and pinning it
+      // to 'internal' only risks the browser declining to offer a credential
+      // it holds under a different transport.
+      allowCredentials: [{ type: 'public-key', id: fromBase64Url(record.credentialId) }],
+      userVerification: 'required',   // the OS must actually check a face/finger/PIN
+      hints: ['client-device'],
       timeout: 60000,
     },
   });
@@ -215,9 +248,44 @@ function setOverlayMessage(text) {
   if (els.overlayText) els.overlayText.textContent = text;
 }
 
+/**
+ * Turns a WebAuthn rejection into something worth reading.
+ *
+ * Browsers deliberately report cancel, timeout and a wrong finger as the same
+ * NotAllowedError so a page cannot tell them apart (and so cannot probe the
+ * user), which is why that case stays generic.
+ */
+function describeError(err, ceremony) {
+  switch (err?.name) {
+    case 'NotAllowedError':
+      return ceremony === 'enable'
+        ? 'Setup was cancelled or timed out, so the app lock is still off.'
+        : 'Not verified — cancelled, timed out, or not recognised.';
+    case 'InvalidStateError':
+      return ceremony === 'enable'
+        ? 'This device already has a RailOne lock registered.'
+        : 'This device can no longer use the saved lock.';
+    case 'NotSupportedError':
+      return 'This device can’t provide the kind of verification RailOne asks for.';
+    case 'SecurityError':
+      return 'Verification needs a secure (https) connection.';
+    case 'AbortError':
+      return 'Verification was interrupted.';
+    default:
+      return ceremony === 'enable'
+        ? 'Could not set up the app lock on this device.'
+        : 'Could not verify on this device.';
+  }
+}
+
 function unlockApp() {
   delete document.documentElement.dataset.locked;
   document.getElementById('app')?.removeAttribute('inert');
+}
+
+function noteFailure() {
+  failedAttempts += 1;
+  if (failedAttempts >= FAILURES_BEFORE_RECOVERY && els.resetBtn) els.resetBtn.hidden = false;
 }
 
 async function attemptUnlock({ automatic = false } = {}) {
@@ -228,11 +296,17 @@ async function attemptUnlock({ automatic = false } = {}) {
       unlockApp();
       return true;
     }
+    noteFailure();
     setOverlayMessage('That didn’t match. Try again.');
   } catch (err) {
-    setOverlayMessage(err?.name === 'NotAllowedError' && automatic
-      ? 'Tap Unlock to continue.'          // some browsers need a real tap first
-      : 'Could not verify. Tap Unlock to try again.');
+    // An automatic attempt that the browser refused usually just means it
+    // wants a real tap first — that is not a failed verification.
+    if (automatic && err?.name === 'NotAllowedError') {
+      setOverlayMessage('Tap Unlock to continue.');
+    } else {
+      noteFailure();
+      setOverlayMessage(`${describeError(err, 'unlock')} Tap Unlock to try again.`);
+    }
   } finally {
     if (els.unlockBtn) {
       els.unlockBtn.disabled = false;
@@ -258,6 +332,18 @@ async function runGate() {
   }
 
   els.unlockBtn?.addEventListener('click', () => attemptUnlock());
+
+  els.resetBtn?.addEventListener('click', async () => {
+    const ok = window.confirm(
+      'Turn off the app lock on this device?\n\n'
+      + 'Use this if your screen lock changed and RailOne can no longer verify you. '
+      + 'Your profile and tickets stay on this device either way.'
+    );
+    if (!ok) return;
+    await disable();
+    renderToggle(false);
+  });
+
   attemptUnlock({ automatic: true });
 }
 
@@ -297,14 +383,10 @@ export async function initAppLock() {
       }
     } catch (err) {
       renderToggle(isEnabled());
-      if (err?.name === 'NotAllowedError') {
-        showToast('Setup was cancelled, so the app lock is still off.');
-      } else if (err?.name === 'InvalidStateError') {
-        showToast('This device already has a RailOne lock registered.');
-      } else {
+      if (!['NotAllowedError', 'InvalidStateError'].includes(err?.name)) {
         console.warn('RailOne: could not set up the app lock —', err);
-        showToast('Could not set up the app lock on this device.');
       }
+      showToast(describeError(err, 'enable'));
     } finally {
       els.toggle.disabled = false;
     }

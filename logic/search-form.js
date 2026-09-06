@@ -290,7 +290,7 @@ function updatePreview() {
 
   els.preview.hidden = false;
   els.previewKm.textContent = `${q.chargeableKm} km`;
-  els.previewVia.textContent = viaDisplay(q.via);
+  els.previewVia.textContent = viaDisplay(q.via, q.routeCount);
   renderPassSummary(q, season);
 
   const { total } = currentTotal(q);

@@ -136,9 +136,25 @@ export function pricedPassBands(fareRules, cls) {
     .map((slab) => `${slab.from_km}\u2013${slab.to_km} km`);
 }
 
-/** '------' when the route needs no routing points (direct journey). */
-export function viaDisplay(via) {
-  return via && via.length ? via : '------';
+/**
+ * The Via line: "<n>RT>><route>", e.g. 1RT>>KYN-TNA-CLA-DR-SNRD.
+ *
+ * `n` is how many genuinely distinct routes exist between the two stations
+ * (MumbaiRail.routeCount), and the route after it is always the one this
+ * ticket is actually quoted and priced on. Station codes, never names.
+ *
+ * Two cases print no prefix at all:
+ *  - a direct journey, which has no routing points to qualify: the prefix
+ *    answers "which of the n routes is this?", and '------' is not a route.
+ *    Plain dashes, per fare_rules.display_rules.via_when_direct.
+ *  - no count supplied, as with a booking saved before counts existed — an
+ *    old ticket shows its route rather than a made-up prefix.
+ */
+export function viaDisplay(via, routeCount) {
+  const route = via && via.length ? via : null;
+  if (!route) return '------';
+  if (!Number.isFinite(routeCount) || routeCount < 1) return route;
+  return `${routeCount}RT>>${route}`;
 }
 
 export function passengerLine(adults, children) {

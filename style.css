@@ -324,7 +324,7 @@ button:disabled{cursor:default;}
   display:flex; align-items:center; justify-content:center; position:relative;
   margin-bottom:18px;
 }
-.bookings-count{color:var(--orange-text); font-weight:600; font-size:17px;}
+.bookings-count{color:var(--orange-text); font-weight:500; font-size:14px;}
 .refresh-btn{position:absolute; right:0; width:32px; height:32px; display:flex; align-items:center; justify-content:center;}
 .refresh-btn svg{width:19px; height:19px;}
 
@@ -363,26 +363,26 @@ button:disabled{cursor:default;}
 .pill-unreserved{
   background:var(--pill-bg);
   color:var(--pill-text);
-  font-weight:600;
-  font-size: 16px;
+  font-weight:500;
+  font-size: 12px;
   padding: 6px 8px;
   border-radius:8px;
 }
-.uts-code{font-size:15px;}
-.uts-label{color:var(--gray); font-weight:500;}
+.uts-code{font-size:12px;}
+.uts-label{color:#525252; font-weight:500;}
 .uts-value{color:var(--navy); font-weight:600;}
 .ticket-mid{display:flex; justify-content:space-between; margin-bottom:18px;}
-.ticket-label{display:block; font-size:15px; color:var(--gray); font-weight:500; margin-bottom:6px;}
-.ticket-value{display:block; font-size:15px; font-weight:600; color:var(--navy);}
+.ticket-label{display:block; font-size:12px; color:var(--gray); font-weight:500; margin-bottom:6px;}
+.ticket-value{display:block; font-size:12px; font-weight:500; color:var(--navy);}
 .align-right{text-align:right;}
 .ticket-route{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:18px;}
-.route-station{font-size:15px; font-weight:600; color:var(--navy); white-space:nowrap;}
-.route-dist{font-size:14px; color:var(--gray); white-space:nowrap;}
+.route-station{font-size:12px; font-weight:400; color:var(--navy); white-space:nowrap;}
+.route-dist{font-size:10px; color:var(--gray); white-space:nowrap;}
 .ticket-dashed{border-top:1.5px dashed #f0a942; margin:0 0 18px;}
 .ticket-actions{display:flex; align-items:center; justify-content:space-evenly; gap:20px;}
-.book-again{color:var(--blue); font-size:16px; font-weight:600;}
+.book-again{color:var(--blue); font-size:14px; font-weight:600;}
 .action-sep{width:1.5px; height:22px; background:var(--sep);}
-.view-details{color:var(--blue); font-size:16px; font-weight:600;}
+.view-details{color:var(--blue); font-size:14px; font-weight:600;}
 .ticket-notch img {
   width: 30px;
 }
@@ -432,7 +432,7 @@ button:disabled{cursor:default;}
   margin-bottom:20px;
 }
 .no-margin {margin: 0 !important;}
-.dt-value#dt-p-name {max-width: 190px;}
+.dt-value#dt-p-name, .dt-value#dt-via {max-width: 190px;}
 .dt-strip{height:14px;}
 .dt-progress {background:#b8b4b4;}
 .dt-in-progress {display: block;width: 0; transition:all .3s ease;}
@@ -522,6 +522,8 @@ button:disabled{cursor:default;}
 .dt-label-title{font-size:14px; font-weight:400; color:#000;}
 .dt-value-strong{font-size:13px; font-weight:700; color:#000;}
 .dt-station{font-size:13px; font-weight:500; color:#000;}
+.dt-station#dt-origin {flex-basis: 40%;}
+.dt-station#dt-dest {max-width: 120px;}
 .dt-dist{font-size:11px; font-weight:400; color:#000;}
 .dt-row.two-col > div{display:flex; flex-direction:column; gap:3px;}
 .dt-label{font-size:13px; font-weight:500; color:#626262;}
@@ -869,6 +871,14 @@ body{overscroll-behavior:none;}
   font-size:15px; font-weight:600;
 }
 .app-lock-btn:disabled{opacity:.6; cursor:default;}
+.app-lock-reset{
+  margin-top:2px;
+  padding:8px 10px;
+  font-size:12.5px; font-weight:600;
+  color:var(--gray);
+  text-decoration:underline;
+}
+.app-lock-reset[hidden]{display:none;}
 
 /* ---- settings switch ---- */
 .switch-row{

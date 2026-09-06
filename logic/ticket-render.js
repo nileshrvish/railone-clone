@@ -65,7 +65,7 @@ export function renderTicket({ quote, ticketType, cls, trainType, adults, childr
   $('dt-origin').textContent = quote.from.name.toUpperCase();
   $('dt-dest').textContent = quote.to.name.toUpperCase();
   $('dt-km').textContent = `—${quote.chargeableKm} km—`;
-  $('dt-via').textContent = viaDisplay(quote.via);
+  $('dt-via').textContent = viaDisplay(quote.via, quote.routeCount);
   $('dt-booked-long').textContent = formatBookedLong(bookedAt);
 
   const bookedText = formatBookedShort(bookedAt);
