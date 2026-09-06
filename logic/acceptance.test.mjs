@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 import { MumbaiRail } from '../mumbai-rail.js';
-import { computeTotal, classMinimum, viaDisplay, fareLine, validTillISO } from './fare.js';
+import { computeTotal, classMinimum, viaDisplay, fareLine, validTillISO, journeyValidityNote } from './fare.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const data = JSON.parse(readFileSync(join(__dirname, '..', 'data', 'mumbai_suburban_rail.json'), 'utf8'));
@@ -36,6 +36,32 @@ test('2. AWL -> TNA, return, SECOND', () => {
   const bookedDate = new Date(2026, 7, 14, 9, 52); // 14 Aug 2026, local
   const validIso = validTillISO({ ticketType: 'return', bookedDate, quote: q });
   assert.equal(validIso, '2026-08-15');
+
+  // The footer carries that date, rather than a fixed one.
+  assert.equal(
+    journeyValidityNote({ ticketType: 'return', validTillIso: validIso }),
+    'Valid for one ret. jrny. till midnight of 15/08/2026'
+  );
+});
+
+test('2b. validity footer switches wording with the ticket type', () => {
+  const q = rail.quote('AWL', 'TNA', { ticketType: 'single', cls: 'SECOND' });
+
+  const singleIso = validTillISO({ ticketType: 'single', bookedDate: new Date(2026, 7, 14), quote: q });
+  assert.equal(
+    journeyValidityNote({ ticketType: 'single', validTillIso: singleIso }),
+    '*Valid for start of journey within 1 hour or until departure of the first train.'
+  );
+
+  // A return booked a day later carries that later date, not a hardcoded one.
+  const laterIso = validTillISO({ ticketType: 'return', bookedDate: new Date(2026, 11, 31), quote: q });
+  assert.equal(
+    journeyValidityNote({ ticketType: 'return', validTillIso: laterIso }),
+    'Valid for one ret. jrny. till midnight of 01/01/2027'
+  );
+
+  // Season passes print their validity in the rows above, not in the footer.
+  assert.equal(journeyValidityNote({ ticketType: 'season_monthly', validTillIso: '2026-09-09' }), null);
 });
 
 test('3. AWL -> TNA, single, SECOND', () => {

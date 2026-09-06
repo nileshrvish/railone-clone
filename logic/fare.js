@@ -105,9 +105,25 @@ export function validTillISO({ ticketType, bookedDate, quote }) {
   throw new Error(`Unknown ticket type: ${ticketType}`);
 }
 
-/** "Valid for one ret. jrny. till midnight of {DD/MM/YYYY}" — return tickets only. */
-export function returnFooterNote(validTillIso) {
-  return `Valid for one ret. jrny. till midnight of ${isoToDDMMYYYY(validTillIso)}`;
+/**
+ * The validity footer printed under a journey ticket, worded per ticket type:
+ *
+ *  - single: the journey must start within the hour (or on the first train
+ *    out), so there is no date to print;
+ *  - return: valid until midnight of the *Valid Till date, which is derived
+ *    from the booking date by validTillISO() — never a fixed date.
+ *
+ * Season passes return null: their validity is already printed as the
+ * Valid From / *Valid Till rows above, so a footer would repeat it.
+ */
+export function journeyValidityNote({ ticketType, validTillIso }) {
+  if (ticketType === 'single') {
+    return '*Valid for start of journey within 1 hour or until departure of the first train.';
+  }
+  if (ticketType === 'return') {
+    return `Valid for one ret. jrny. till midnight of ${isoToDDMMYYYY(validTillIso)}`;
+  }
+  return null;
 }
 
 /**

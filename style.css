@@ -44,7 +44,7 @@
   /* surfaces + ink */
   --page-bg: #dfe1e8;
   --surface: #fff;
-  --surface-alt: #f3f8fa;
+  --surface-alt: #ebebeb;
   --border: #e2e3ec;
   --border-strong: #ccd0e0;
   --sep: #c7c9d6;
@@ -419,8 +419,8 @@ button:disabled{cursor:default;}
 
 /* ============ DIGITAL TICKET ============ */
 #view-ticket {background: var(--surface-alt);}
-.ticket-body{padding:16px 10px 0; }
-.thankyou{color:#222222; font-size:11px; font-weight:400; background: var(--surface); padding: 10px;}
+.ticket-body{padding:16px 12px 0; }
+.thankyou{color:#222222; font-size:11px; font-weight:400; background: var(--surface); padding: 10px 12px;}
 
 .digital-ticket{
   /* One accent per ticket, set on this root by ticket-render.js so the strips,
@@ -531,7 +531,7 @@ button:disabled{cursor:default;}
 .dt-identity[hidden]{display:none;}
 
 .dt-perf{position:relative; display:flex; align-items:center; margin:0 -20px 4px;}
-.dt-perf-line{flex:1; border-top:1.5px dashed var(--border); margin:0;}
+.dt-perf-line{flex:1; border-top:1px dotted var(--border); margin:0;}
 .dt-perf-notch{width:33px; height:33px; border-radius:50%; background:var(--surface-alt);}
 .dt-perf-notch.left{margin-left:-6px;}
 .dt-perf-notch.right{margin-right:-6px;}
@@ -574,7 +574,7 @@ button:disabled{cursor:default;}
 }
 .booking-experience,
 .did-you-know {
-  padding: 10px;
+  padding: 10px 12px;
   background-color: var(--surface);
 }
 .did-you-know {margin-bottom: 10px;}
