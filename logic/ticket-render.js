@@ -17,7 +17,7 @@
  */
 import {
   viaDisplay, passengerLine, formatBookedLong, formatBookedShort,
-  validTillISO, isoToDDMMYYYY, returnFooterNote, fareLine, ticketCategoryLabel,
+  validTillISO, isoToDDMMYYYY, journeyValidityNote, fareLine, ticketCategoryLabel,
 } from './fare.js';
 import { isProfileComplete } from './profile-store.js';
 
@@ -98,13 +98,12 @@ export function renderTicket({ quote, ticketType, cls, trainType, adults, childr
     identityEl.hidden = true;
   }
 
+  // Follows the ticket's own type, so switching between Single and Return in
+  // the search form switches the wording (and, for a return, the date) with it.
   const noteEl = $('dt-valid-note');
-  if (ticketType === 'return') {
-    noteEl.textContent = returnFooterNote(validIso);
-    noteEl.hidden = false;
-  } else {
-    noteEl.hidden = true;
-  }
+  const note = journeyValidityNote({ ticketType, validTillIso: validIso });
+  noteEl.textContent = note ?? '';
+  noteEl.hidden = !note;
 
   // Header "Mobile: …" and "Thank You {name}, Happy Journey!" — only
   // overwritten when we actually have a name/mobile to show, so a ticket
